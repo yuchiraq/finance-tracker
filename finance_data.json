@@ -1,0 +1,207 @@
+{
+  "Transactions": [
+    {
+      "ID": 19,
+      "Amount": 60,
+      "Description": "Бабушка",
+      "DateTime": "2025-03-23T17:51:04.761795187+03:00",
+      "IsPositive": true,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 18,
+      "Amount": 11.3,
+      "Description": "поел на заправке",
+      "DateTime": "2025-03-23T17:50:54.921248968+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 17,
+      "Amount": 9,
+      "Description": "хот дог и энергетик",
+      "DateTime": "2025-03-22T18:08:16.095722296+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 16,
+      "Amount": 22,
+      "Description": "пицца",
+      "DateTime": "2025-03-21T18:08:03.932450925+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 15,
+      "Amount": 12,
+      "Description": "AUX",
+      "DateTime": "2025-03-21T18:07:56.757451832+03:00",
+      "IsPositive": false,
+      "Category": "Развлечения",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 14,
+      "Amount": 20,
+      "Description": "блинчики в центре",
+      "DateTime": "2025-03-21T18:07:47.510885302+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 13,
+      "Amount": 57,
+      "Description": "продукты",
+      "DateTime": "2025-03-21T18:07:37.287195388+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 12,
+      "Amount": 11,
+      "Description": "оплата долга такси",
+      "DateTime": "2025-03-21T18:07:27.019179186+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 11,
+      "Amount": 20,
+      "Description": "интернет",
+      "DateTime": "2025-03-21T18:07:18.01096346+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 10,
+      "Amount": 175,
+      "Description": "донорство",
+      "DateTime": "2025-03-21T18:07:09.720628408+03:00",
+      "IsPositive": true,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 9,
+      "Amount": 500,
+      "Description": "зп",
+      "DateTime": "2025-03-21T18:06:59.700969957+03:00",
+      "IsPositive": true,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 8,
+      "Amount": 23,
+      "Description": "расческа и вкусняшка собаке",
+      "DateTime": "2025-03-21T18:06:50.55322352+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": [
+        "Собака"
+      ],
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 7,
+      "Amount": 23,
+      "Description": "хостинг",
+      "DateTime": "2025-03-21T18:06:37.238851387+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 6,
+      "Amount": 40,
+      "Description": "бабушка",
+      "DateTime": "2025-03-20T18:06:22.959146608+03:00",
+      "IsPositive": true,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 5,
+      "Amount": 25,
+      "Description": "бензин и салфетки",
+      "DateTime": "2025-03-20T18:06:13.960052848+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 4,
+      "Amount": 25,
+      "Description": "жижа",
+      "DateTime": "2025-03-20T18:05:55.12070202+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 3,
+      "Amount": 50,
+      "Description": "Папа",
+      "DateTime": "2025-03-20T18:05:43.322806999+03:00",
+      "IsPositive": true,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 20,
+      "Amount": 30,
+      "Description": "ире на очки",
+      "DateTime": "2025-03-23T18:21:15.396520953+03:00",
+      "IsPositive": false,
+      "Category": "Другое",
+      "Tags": null,
+      "Currency": "BYN",
+      "Notes": ""
+    }
+  ],
+  "Balances": {
+    "BYN": 536.7
+  }
+}

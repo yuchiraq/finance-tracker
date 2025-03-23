@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Финансовый трекер</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Финансовый трекер</h1>
+        </header>
+
+        <div class="notification" id="notification" style="display: none;"></div>
+
+        <section class="balance-section">
+            <div class="card balance-card">
+                <h2>Текущий баланс</h2>
+                {{ if .balances }}
+                <div class="balances">
+                    {{ range .balances }}
+                    <div class="balance-item">
+                        <span class="balance-currency">
+                            {{ if eq .Currency "USD" }}${{ else if eq .Currency "EUR" }}€{{ else }}{{ .Currency }}{{ end }}:
+                        </span>
+                        <span class="balance-amount">{{ .Balance }}</span>
+                    </div>
+                    {{ end }}
+                </div>
+                {{ else }}
+                <div class="balance">0.00</div>
+                {{ end }}
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="card">
+                <h2>Статистика за месяц</h2>
+                <p>Доходы: <span id="monthly-income">{{ .monthlyIncome }} BYN</span></p>
+                <p>Расходы: <span id="monthly-expense">{{ .monthlyExpense }} BYN</span></p>
+            </div>
+        </section>
+
+        <section class="transaction-form-section">
+            <div class="card">
+                <h2>Добавить/Редактировать операцию</h2>
+                <form id="transaction-form" action="/add" method="POST">
+                    <input type="hidden" id="edit-id" name="edit-id" value="">
+                    <div class="form-group">
+                        <label for="amount">Сумма</label>
+                        <input type="text" id="amount" name="amount" placeholder="Введите сумму (например, 123.45)" required pattern="^\d*\.?\d*$" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Описание</label>
+                        <input type="text" id="description" name="description" placeholder="За что или от кого" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currency">Валюта</label>
+                        <select id="currency" name="currency" required>
+                            <option value="BYN">BYN</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Заметки</label>
+                        <textarea id="notes" name="notes" placeholder="Дополнительные заметки"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" name="action" value="add-income" class="btn income-btn" id="submit-income-btn"><i class="fas fa-arrow-up"></i> Доход</button>
+<button type="submit" name="action" value="add-expense" class="btn expense-btn" id="submit-expense-btn"><i class="fas fa-arrow-down"></i> Расход</button>
+                        <button type="button" class="btn secondary" id="cancel-edit" style="display: none;">Отменить редактирование</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="filter-section">
+            <div class="filter-toggle">
+                <button id="toggle-filter" class="btn filter-btn">Фильтры ▼</button>
+            </div>
+            <div class="card filter-content" id="filter-content" style="display: none;">
+                <h2>Фильтровать операции</h2>
+                <form action="/" method="GET">
+                    <div class="form-group">
+                        <label for="filter-type">Тип</label>
+                        <select id="filter-type" name="filter-type">
+                            <option value="">Все</option>
+                            <option value="income">Доходы</option>
+                            <option value="expense">Расходы</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-date-start">Дата (с)</label>
+                        <input type="date" id="filter-date-start" name="filter-date-start">
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-date-end">Дата (по)</label>
+                        <input type="date" id="filter-date-end" name="filter-date-end">
+                    </div>
+                    <button type="submit" class="btn apply-btn">Применить</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <div class="card">
+                <h2>История операций</h2>
+
+                {{ if .transactions }}
+                <div class="transactions-list">
+                    {{ range .transactions }}
+                    <div class="transaction-item" data-id="{{ .ID }}" data-amount="{{ .Amount }}" data-description="{{ .Description }}" data-category="{{ .Category }}" data-type="{{ if .IsPositive }}income{{ else }}expense{{ end }}" data-tags="{{ .Tags }}" data-currency="{{ .Currency }}" data-notes="{{ .Notes }}">
+                        <div class="transaction-content">
+                            <div class="transaction-amount {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ printf "%.2f" .Amount }} {{ .Currency }}</div>
+                            <div class="transaction-details">
+                                <div class="transaction-description {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ .Description }}</div>
+                                <div class="transaction-tags">{{ if .Tags }}Теги: {{ .Tags }}{{ end }}</div>
+                                <div class="transaction-notes">{{ if .Notes }}Заметки: {{ .Notes }}{{ end }}</div>
+                                <div class="transaction-date">{{ .DateTime }}</div>
+                            </div>
+                        </div>
+                        <div class="transaction-actions">
+                            <button class="action-btn edit-btn">✎</button>
+                            <form action="/delete/{{ .ID }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту транзакцию?');">
+                                <button type="submit" class="action-btn delete-btn">✕</button>
+                            </form>
+                        </div>
+                    </div>
+                    {{ end }}
+                </div>
+                {{ else }}
+                <p class="no-transactions">Операций пока нет</p>
+                {{ end }}
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Автоопределение темы
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        if (prefersDarkScheme.matches) {
+            document.body.classList.add("dark-theme");
+        } else {
+            document.body.classList.add("light-theme");
+        }
+
+        // Уведомления
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        if (message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Валидация ввода суммы (разрешить только цифры и одну точку)
+        const amountInput = document.getElementById('amount');
+        amountInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            value = value.replace(/[^0-9.]/g, '');
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            e.target.value = value;
+        });
+
+        // Редактирование транзакции
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const transactionItem = button.closest('.transaction-item');
+                const id = transactionItem.dataset.id;
+                const amount = transactionItem.dataset.amount;
+                const description = transactionItem.dataset.description;
+                const type = transactionItem.dataset.type;
+                const tags = transactionItem.dataset.tags;
+                const currency = transactionItem.dataset.currency;
+                const notes = transactionItem.dataset.notes;
+
+                document.getElementById('edit-id').value = id;
+                document.getElementById('amount').value = amount;
+                document.getElementById('description').value = description;
+                document.getElementById('tags').value = tags;
+                document.getElementById('currency').value = currency;
+                document.getElementById('notes').value = notes;
+
+                const form = document.getElementById('transaction-form');
+                form.action = `/edit/${id}`;
+                document.getElementById('submit-income-btn').textContent = 'Сохранить (Доход)';
+                document.getElementById('submit-expense-btn').textContent = 'Сохранить (Расход)';
+                document.getElementById('submit-income-btn').style.display = type === 'income' ? 'inline-block' : 'none';
+                document.getElementById('submit-expense-btn').style.display = type === 'expense' ? 'inline-block' : 'none';
+                document.getElementById('cancel-edit').style.display = 'inline-block';
+
+                form.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Отмена редактирования
+        document.getElementById('cancel-edit').addEventListener('click', () => {
+            const form = document.getElementById('transaction-form');
+            form.action = '/add';
+            form.reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('submit-income-btn').textContent = 'Доход';
+            document.getElementById('submit-expense-btn').textContent = 'Расход';
+            document.getElementById('submit-income-btn').style.display = 'inline-block';
+            document.getElementById('submit-expense-btn').style.display = 'inline-block';
+            document.getElementById('cancel-edit').style.display = 'none';
+        });
+
+        // Сворачивание/разворачивание фильтров
+        document.getElementById('toggle-filter').addEventListener('click', () => {
+            const filterContent = document.getElementById('filter-content');
+            const toggleButton = document.getElementById('toggle-filter');
+            if (filterContent.style.display === 'none') {
+                filterContent.style.display = 'block';
+                toggleButton.textContent = 'Фильтры ▲';
+            } else {
+                filterContent.style.display = 'none';
+                toggleButton.textContent = 'Фильтры ▼';
+            }
+        });
+    </script>
+</body>
+</html>
