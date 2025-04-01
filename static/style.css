@@ -1,3 +1,5 @@
+/* static/style.css */
+
 /* Сбрасываем стили */
 * {
   margin: 0;
@@ -8,39 +10,62 @@
 /* Основные стили */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #f2f4f8;
+  background: linear-gradient(135deg, #f2f4f8, #e0e4e8);
   color: #1c2526;
   margin: 0;
-  padding: 20px;
+  padding: 16px;
   line-height: 1.6;
+  min-height: 100vh;
+}
+
+body.dark-theme {
+  background: linear-gradient(135deg, #1c2526, #2c3639);
+  color: #f2f4f8;
+}
+
+/* Убираем подчёркивание у всех ссылок */
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Заголовки */
 h1 {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 24px;
   color: #1c2526;
+  transition: color 0.3s ease;
+}
+
+body.dark-theme h1 {
+  color: #f2f4f8;
 }
 
 h2 {
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 600;
   margin-bottom: 16px;
   color: #1c2526;
+  text-align: center;
+}
+
+body.dark-theme h2 {
+  color: #f2f4f8;
 }
 
 /* Карточки */
 .card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 24px;
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -52,12 +77,37 @@ h2 {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
+body.dark-theme .card {
+  background: rgba(44, 54, 57, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Шапка */
+header {
+  margin-bottom: 24px;
+}
+
+header h1 {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+header h1:hover {
+  transform: scale(1.02);
+}
+
 /* Баланс */
 .balance-section .balance-item {
   display: flex;
   justify-content: center;
   align-items: baseline;
   gap: 8px;
+  margin-bottom: 8px;
 }
 
 .balance-currency {
@@ -66,10 +116,18 @@ h2 {
   color: #1c2526;
 }
 
+body.dark-theme .balance-currency {
+  color: #f2f4f8;
+}
+
 .balance-amount {
   font-size: 36px;
   font-weight: 600;
   color: #1c2526;
+}
+
+body.dark-theme .balance-amount {
+  color: #f2f4f8;
 }
 
 .balance-amount.negative {
@@ -80,6 +138,7 @@ h2 {
 .stats-section p {
   font-size: 16px;
   margin: 8px 0;
+  text-align: center;
 }
 
 #monthly-income {
@@ -105,6 +164,11 @@ h2 {
   margin-bottom: 8px;
 }
 
+body.dark-theme .form-group label {
+  color: #ffffff;
+  font-weight: 600;
+}
+
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -114,7 +178,16 @@ h2 {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   background: #f9f9f9;
-  transition: border-color 0.2s ease;
+  color: #1c2526;
+  transition: border-color 0.2s ease, background 0.3s ease;
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group select,
+body.dark-theme .form-group textarea {
+  background: #2c3639;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f2f4f8;
 }
 
 .form-group input:focus,
@@ -123,6 +196,12 @@ h2 {
   outline: none;
   border-color: #007aff;
   background: #fff;
+}
+
+body.dark-theme .form-group input:focus,
+body.dark-theme .form-group select:focus,
+body.dark-theme .form-group textarea:focus {
+  background: #3f4e50;
 }
 
 .form-group textarea {
@@ -135,6 +214,7 @@ h2 {
   justify-content: center;
   gap: 16px;
   margin-top: 24px;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -144,12 +224,22 @@ h2 {
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.3s ease;
+}
+
+body.dark-theme .btn {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .btn:hover {
   transform: scale(1.02);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-theme .btn:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .btn:active {
@@ -161,14 +251,34 @@ h2 {
   color: white;
 }
 
+.income-btn i {
+  margin-right: 8px;
+}
+
 .expense-btn {
   background: linear-gradient(135deg, #ff3b30, #d32f2f);
   color: white;
 }
 
+.expense-btn i {
+  margin-right: 8px;
+}
+
 .secondary {
   background: #e0e0e0;
   color: #1c2526;
+}
+
+body.dark-theme .secondary {
+  background: #3f4e50;
+  color: #f2f4f8;
+}
+
+.apply-btn {
+  background: #007aff;
+  color: white;
+  width: 100%;
+  max-width: 200px;
 }
 
 /* Фильтры */
@@ -188,14 +298,12 @@ h2 {
   transition: background 0.2s ease;
 }
 
-.filter-btn:hover {
-  background: #005bb5;
+body.dark-theme .filter-btn {
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
-.apply-btn {
-  background: #007aff;
-  color: white;
-  width: 100%;
+.filter-btn:hover {
+  background: #005bb5;
 }
 
 /* История операций */
@@ -207,19 +315,35 @@ h2 {
   margin-bottom: 12px;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  background: transparent;
-  transition: background 0.2s ease;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+body.dark-theme .transaction-item {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.transaction-item:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body.dark-theme .transaction-item:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .transaction-content {
   display: flex;
   gap: 16px;
   align-items: center;
+  flex: 1;
 }
 
 .transaction-amount {
   font-size: 16px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .income-text {
@@ -237,6 +361,11 @@ h2 {
 .transaction-description {
   font-size: 16px;
   font-weight: 500;
+  color: #1c2526;
+}
+
+body.dark-theme .transaction-description {
+  color: #f2f4f8;
 }
 
 .transaction-tags,
@@ -244,6 +373,12 @@ h2 {
 .transaction-date {
   font-size: 14px;
   color: #666;
+}
+
+body.dark-theme .transaction-tags,
+body.dark-theme .transaction-notes,
+body.dark-theme .transaction-date {
+  color: #a0a0a0;
 }
 
 .transaction-actions {
@@ -261,6 +396,12 @@ h2 {
   transition: background 0.2s ease;
 }
 
+body.dark-theme .action-btn {
+  background: #3f4e50;
+  color: #f2f4f8;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 .edit-btn:hover {
   background: #007aff;
   color: white;
@@ -269,6 +410,12 @@ h2 {
 .delete-btn:hover {
   background: #ff3b30;
   color: white;
+}
+
+/* Кнопка "Загрузить ещё" */
+.load-more {
+  text-align: center;
+  margin-top: 20px;
 }
 
 /* Уведомления */
@@ -283,58 +430,99 @@ h2 {
   display: none;
 }
 
-/* Темная тема */
-body.dark-theme {
-  background: #1c2526;
-  color: #f2f4f8;
+/* Форма работы */
+.work-form-section .form-group input:not([type="checkbox"]) {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background: #f9f9f9;
+  color: #1c2526;
+  transition: border-color 0.2s ease;
 }
 
-body.dark-theme h1,
-body.dark-theme h2 {
-  color: #f2f4f8;
-}
-
-body.dark-theme .card {
-  background: rgba(44, 54, 57, 0.9);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-body.dark-theme .balance-currency,
-body.dark-theme .balance-amount {
-  color: #f2f4f8;
-}
-
-body.dark-theme .form-group input,
-body.dark-theme .form-group select,
-body.dark-theme .form-group textarea {
+body.dark-theme .work-form-section .form-group input:not([type="checkbox"]) {
   background: #2c3639;
   border-color: rgba(255, 255, 255, 0.1);
   color: #f2f4f8;
 }
 
-body.dark-theme .form-group input:focus,
-body.dark-theme .form-group select:focus,
-body.dark-theme .form-group textarea:focus {
+.work-form-section .form-group input:focus {
+  outline: none;
+  border-color: #007aff;
+  background: #fff;
+}
+
+body.dark-theme .work-form-section .form-group input:focus {
   background: #3f4e50;
 }
 
-body.dark-theme .btn,
-body.dark-theme .action-btn {
-  border-color: rgba(255, 255, 255, 0.1);
+/* История работы */
+.worklog-item {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-body.dark-theme .transaction-item {
-  border-color: rgba(255, 255, 255, 0.1);
+.worklog-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-body.dark-theme .transaction-tags,
-body.dark-theme .transaction-notes,
-body.dark-theme .transaction-date {
-  color: #a0a0a0;
+body.dark-theme .worklog-item {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-body.dark-theme .action-btn {
-  background: #3f4e50;
+body.dark-theme .worklog-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.worklog-date {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1c2526;
+  margin-bottom: 8px;
+}
+
+body.dark-theme .worklog-date {
   color: #f2f4f8;
+}
+
+.worklog-details {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+body.dark-theme .worklog-details {
+  color: #d0d0d0; /* Улучшаем читаемость в тёмной теме */
+}
+
+.worklog-details span {
+  font-weight: 500;
+  color: #1c2526;
+}
+
+body.dark-theme .worklog-details span {
+  color: #f2f4f8;
+}
+
+.no-entries {
+  text-align: center;
+  color: #666;
+}
+
+body.dark-theme .no-entries {
+  color: #a0a0a0;
 }

@@ -1,3 +1,4 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,9 +11,10 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Финансовый трекер</h1>
-        </header>
+        <!-- templates/index.html (фрагмент header) -->
+<header>
+    <h1 onclick="window.location.href='/worklog'" style="cursor: pointer;">Финансовый трекер</h1>
+</header>
 
         <div class="notification" id="notification" style="display: none;"></div>
 
@@ -46,7 +48,7 @@
 
         <section class="transaction-form-section">
             <div class="card">
-                <h2>Добавить/Редактировать операцию</h2>
+                <h2>Добавить операцию</h2>
                 <form id="transaction-form" action="/add" method="POST">
                     <input type="hidden" id="edit-id" name="edit-id" value="">
                     <div class="form-group">
@@ -75,12 +77,46 @@
 
                     <div class="form-actions">
                         <button type="submit" name="action" value="add-income" class="btn income-btn" id="submit-income-btn"><i class="fas fa-arrow-up"></i> Доход</button>
-<button type="submit" name="action" value="add-expense" class="btn expense-btn" id="submit-expense-btn"><i class="fas fa-arrow-down"></i> Расход</button>
+                        <button type="submit" name="action" value="add-expense" class="btn expense-btn" id="submit-expense-btn"><i class="fas fa-arrow-down"></i> Расход</button>
                         <button type="button" class="btn secondary" id="cancel-edit" style="display: none;">Отменить редактирование</button>
                     </div>
                 </form>
             </div>
         </section>
+
+        {{ $today := .today }}
+        {{ $hasWorkToday := false }}
+        {{ range .workEntries }}
+            {{ if eq .Date $today }}
+                {{ $hasWorkToday = true }}
+            {{ end }}
+        {{ end }}
+        {{ if not $hasWorkToday }}
+        <!-- templates/index.html (фрагмент формы работы) -->
+<section class="work-form-section">
+    <div class="card">
+        <h2>Работа сегодня</h2>
+        <form id="work-form" action="/add-work" method="POST">
+            <div class="form-group">
+                <label for="place">Место работы</label>
+                <input type="text" id="place" name="place" placeholder="Где работали">
+            </div>
+            <div class="form-group">
+                <label for="start_time">С какого времени</label>
+                <input type="time" id="start_time" name="start_time" value="09:00">
+            </div>
+            <div class="form-group">
+                <label for="end_time">До какого времени</label>
+                <input type="time" id="end_time" name="end_time" value="17:00">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn apply-btn">Добавить</button>
+                <button type="button" class="btn secondary" onclick="setDayOff()">Выходной</button>
+            </div>
+        </form>
+    </div>
+</section>
+        {{ end }}
 
         <section class="filter-section">
             <div class="filter-toggle">
@@ -115,27 +151,34 @@
                 <h2>История операций</h2>
 
                 {{ if .transactions }}
-                <div class="transactions-list">
-                    {{ range .transactions }}
-                    <div class="transaction-item" data-id="{{ .ID }}" data-amount="{{ .Amount }}" data-description="{{ .Description }}" data-category="{{ .Category }}" data-type="{{ if .IsPositive }}income{{ else }}expense{{ end }}" data-tags="{{ .Tags }}" data-currency="{{ .Currency }}" data-notes="{{ .Notes }}">
-                        <div class="transaction-content">
-                            <div class="transaction-amount {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ printf "%.2f" .Amount }} {{ .Currency }}</div>
-                            <div class="transaction-details">
-                                <div class="transaction-description {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ .Description }}</div>
-                                <div class="transaction-tags">{{ if .Tags }}Теги: {{ .Tags }}{{ end }}</div>
-                                <div class="transaction-notes">{{ if .Notes }}Заметки: {{ .Notes }}{{ end }}</div>
-                                <div class="transaction-date">{{ .DateTime }}</div>
-                            </div>
-                        </div>
-                        <div class="transaction-actions">
-                            <button class="action-btn edit-btn">✎</button>
-                            <form action="/delete/{{ .ID }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту транзакцию?');">
-                                <button type="submit" class="action-btn delete-btn">✕</button>
-                            </form>
-                        </div>
-                    </div>
-                    {{ end }}
+                <!-- templates/index.html (фрагмент истории операций) -->
+<div class="transactions-list" id="transactions-list">
+    {{ range .transactions }}
+    <div class="transaction-item" data-id="{{ .ID }}" data-amount="{{ .Amount }}" data-description="{{ .Description }}" data-category="{{ .Category }}" data-type="{{ if .IsPositive }}income{{ else }}expense{{ end }}" data-tags="{{ .Tags }}" data-currency="{{ .Currency }}" data-notes="{{ .Notes }}">
+        <div class="transaction-content">
+            <div class="transaction-amount {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ .Amount }} {{ .Currency }}</div>
+            <div class="transaction-details">
+                <div class="transaction-description {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ .Description }}</div>
+                <div class="transaction-tags">{{ if .Tags }}Теги: {{ .Tags }}{{ end }}</div>
+                <div class="transaction-notes">{{ if .Notes }}Заметки: {{ .Notes }}{{ end }}</div>
+                <div class="transaction-date">{{ .DateTime }}</div>
+            </div>
+        </div>
+        <div class="transaction-actions">
+            <button class="action-btn edit-btn">✎</button>
+            <form action="/delete/{{ .ID }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту транзакцию?');">
+                <button type="submit" class="action-btn delete-btn">✕</button>
+            </form>
+        </div>
+    </div>
+    {{ end }}
+</div>
+
+                {{ if .pagination.HasNext }}
+                <div class="load-more">
+                    <button id="load-more-btn" class="btn secondary" data-next-page="{{ .pagination.NextPage }}">Загрузить ещё</button>
                 </div>
+                {{ end }}
                 {{ else }}
                 <p class="no-transactions">Операций пока нет</p>
                 {{ end }}
@@ -164,7 +207,7 @@
             }, 3000);
         }
 
-        // Валидация ввода суммы (разрешить только цифры и одну точку)
+        // Валидация ввода суммы
         const amountInput = document.getElementById('amount');
         amountInput.addEventListener('input', function(e) {
             let value = e.target.value;
@@ -232,6 +275,95 @@
                 toggleButton.textContent = 'Фильтры ▼';
             }
         });
+
+        // Управление полями формы работы
+        function toggleWorkFields() {
+            const isDayOff = document.getElementById('is_day_off').checked;
+            const placeInput = document.getElementById('place');
+            const startTimeInput = document.getElementById('start_time');
+            const endTimeInput = document.getElementById('end_time');
+
+            placeInput.disabled = isDayOff;
+            startTimeInput.disabled = isDayOff;
+            endTimeInput.disabled = isDayOff;
+
+            if (isDayOff) {
+                placeInput.value = '';
+                startTimeInput.value = '09:00';
+                endTimeInput.value = '17:00';
+            }
+        }
+
+        // Динамическая подгрузка транзакций
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+            const nextPage = loadMoreBtn.dataset.nextPage;
+            fetch(`/api/transactions?page=${nextPage}`)
+            .then(response => response.json())
+            .then(data => {
+                const transactionsList = document.getElementById('transactions-list');
+                data.transactions.forEach(t => {
+                    const div = document.createElement('div');
+                    div.className = 'transaction-item';
+                    div.dataset.id = t.ID;
+                    div.dataset.amount = t.Amount;
+                    div.dataset.description = t.Description;
+                    div.dataset.type = t.IsPositive ? 'income' : 'expense';
+                    div.dataset.tags = t.Tags;
+                    div.dataset.currency = t.Currency;
+                    div.dataset.notes = t.Notes;
+                    div.innerHTML = `
+                        <div class="transaction-content">
+                            <div class="transaction-amount ${t.IsPositive ? 'income-text' : 'expense-text'}">${t.Amount} ${t.Currency}</div>
+                            <div class="transaction-details">
+                                <div class="transaction-description ${t.IsPositive ? 'income-text' : 'expense-text'}">${t.Description}</div>
+                                <div class="transaction-tags">${t.Tags ? 'Теги: ' + t.Tags : ''}</div>
+                                <div class="transaction-notes">${t.Notes ? 'Заметки: ' + t.Notes : ''}</div>
+                                <div class="transaction-date">${t.DateTime}</div>
+                            </div>
+                        </div>
+                        <div class="transaction-actions">
+                            <button class="action-btn edit-btn">✎</button>
+                            <form action="/delete/${t.ID}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту транзакцию?');">
+                                <button type="submit" class="action-btn delete-btn">✕</button>
+                            </form>
+                        </div>
+                    `;
+                    transactionsList.appendChild(div);
+                });
+
+                if (data.hasNext) {
+                    loadMoreBtn.dataset.nextPage = data.nextPage;
+                } else {
+                    loadMoreBtn.remove();
+                }
+
+                // ... (остальной код для редактирования остаётся без изменений)
+            })
+            .catch(err => {
+                console.error('Ошибка подгрузки транзакций:', err);
+            });
+        });
+
+        function setDayOff() {
+        fetch('/add-work', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'is_day_off=true'
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        })
+        .catch(err => {
+            console.error('Ошибка установки выходного дня:', err);
+        });
+    }
+    }
     </script>
 </body>
 </html>

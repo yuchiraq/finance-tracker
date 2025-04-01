@@ -206,7 +206,7 @@
       "Description": "Стипендия",
       "DateTime": "2025-03-24T12:37:16.42693213+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -217,7 +217,7 @@
       "Description": "Корм собаке",
       "DateTime": "2025-03-24T16:11:54.066005115+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -228,7 +228,7 @@
       "Description": "Товары",
       "DateTime": "2025-03-24T17:21:07.316116495+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -239,7 +239,7 @@
       "Description": "Товары",
       "DateTime": "2025-03-24T17:40:29.605366557+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -250,7 +250,7 @@
       "Description": "Молочка",
       "DateTime": "2025-03-24T17:46:36.675402605+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -261,7 +261,7 @@
       "Description": "Продукты и товары",
       "DateTime": "2025-03-24T18:43:07.451628478+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -272,7 +272,7 @@
       "Description": "Булочки",
       "DateTime": "2025-03-24T18:46:36.346543441+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -283,7 +283,7 @@
       "Description": "Для собаки",
       "DateTime": "2025-03-24T18:54:29.780604297+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -294,7 +294,7 @@
       "Description": "Никите",
       "DateTime": "2025-03-25T16:12:56.745643164+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -305,7 +305,7 @@
       "Description": "Деду семечки",
       "DateTime": "2025-03-25T16:13:10.499401259+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -316,7 +316,7 @@
       "Description": "Покушал",
       "DateTime": "2025-03-25T16:13:23.931298383+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -327,7 +327,7 @@
       "Description": "Чистка телефона",
       "DateTime": "2025-03-25T16:13:40.040503425+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -338,7 +338,7 @@
       "Description": "Регистрация на аукцион",
       "DateTime": "2025-03-25T16:14:41.287654267+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -349,7 +349,7 @@
       "Description": "Никита вернул",
       "DateTime": "2025-03-25T16:14:57.925261081+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -360,7 +360,7 @@
       "Description": "Удлинитель и батарейки",
       "DateTime": "2025-03-25T16:16:24.264105975+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -371,7 +371,7 @@
       "Description": "Бабушка",
       "DateTime": "2025-03-25T17:10:09.385539251+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -382,7 +382,7 @@
       "Description": "На проезд",
       "DateTime": "2025-03-25T17:24:21.426324211+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -393,7 +393,7 @@
       "Description": "Починка душа",
       "DateTime": "2025-03-25T17:47:33.139358451+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -404,7 +404,7 @@
       "Description": "КФС",
       "DateTime": "2025-03-25T20:31:34.508654276+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -415,7 +415,7 @@
       "Description": "Ира ",
       "DateTime": "2025-03-26T01:02:20.510023366+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -426,7 +426,7 @@
       "Description": "Корм собаке",
       "DateTime": "2025-03-26T01:35:05.899941907+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -437,7 +437,7 @@
       "Description": "Зажигалка",
       "DateTime": "2025-03-26T09:21:09.395825677+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -448,7 +448,7 @@
       "Description": "Металлолом",
       "DateTime": "2025-03-26T22:32:25.955233094+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -459,7 +459,7 @@
       "Description": "Продукты",
       "DateTime": "2025-03-26T22:32:56.268397232+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -470,7 +470,7 @@
       "Description": "Бензин",
       "DateTime": "2025-03-26T22:33:09.234018032+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -481,7 +481,7 @@
       "Description": "Пицца",
       "DateTime": "2025-03-27T13:44:49.312833457+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -492,7 +492,7 @@
       "Description": "Энергетик",
       "DateTime": "2025-03-27T14:25:17.044771855+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -503,7 +503,7 @@
       "Description": "Хз ",
       "DateTime": "2025-03-27T14:25:29.340878356+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -514,7 +514,7 @@
       "Description": "Вкусняхи",
       "DateTime": "2025-03-27T17:03:53.628050951+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -525,7 +525,7 @@
       "Description": "Бензин",
       "DateTime": "2025-03-27T20:37:05.431068468+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -536,7 +536,7 @@
       "Description": "Хот доги",
       "DateTime": "2025-03-27T20:37:17.44302283+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -547,7 +547,7 @@
       "Description": "Ире кофта ",
       "DateTime": "2025-03-28T22:09:19.168909367+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -558,7 +558,7 @@
       "Description": "Продукты",
       "DateTime": "2025-03-28T22:29:59.654049528+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -569,7 +569,7 @@
       "Description": "Ира ",
       "DateTime": "2025-03-29T21:32:14.354234888+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -580,7 +580,7 @@
       "Description": "Зп",
       "DateTime": "2025-03-29T21:32:31.330607777+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -591,7 +591,7 @@
       "Description": "Никите",
       "DateTime": "2025-03-29T21:41:29.214676323+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -602,7 +602,7 @@
       "Description": "Доставка",
       "DateTime": "2025-03-30T14:00:53.917077311+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -613,7 +613,7 @@
       "Description": "Поели",
       "DateTime": "2025-03-30T16:12:44.888266166+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -624,7 +624,7 @@
       "Description": "Товары для дома",
       "DateTime": "2025-03-30T16:34:09.651478534+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -635,7 +635,7 @@
       "Description": "Ира",
       "DateTime": "2025-03-30T17:32:02.845218622+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -646,7 +646,7 @@
       "Description": "Операция собаке",
       "DateTime": "2025-03-30T20:14:27.681400499+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -657,7 +657,7 @@
       "Description": "За квартиру",
       "DateTime": "2025-03-30T20:14:41.04384308+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -668,7 +668,7 @@
       "Description": "Лекарства собаке",
       "DateTime": "2025-03-30T20:16:37.043641964+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -679,7 +679,7 @@
       "Description": "Попить",
       "DateTime": "2025-03-30T20:18:14.290496278+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -690,7 +690,7 @@
       "Description": "Вода",
       "DateTime": "2025-03-31T13:22:53.927277499+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -701,7 +701,7 @@
       "Description": "Шнурки",
       "DateTime": "2025-03-31T16:20:37.940740436+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -712,7 +712,7 @@
       "Description": "Пирог",
       "DateTime": "2025-03-31T16:32:36.608490862+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -723,7 +723,7 @@
       "Description": "Продукты и кружка",
       "DateTime": "2025-03-31T16:39:40.797104366+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -734,7 +734,7 @@
       "Description": "Зп",
       "DateTime": "2025-04-01T10:44:08.293923431+03:00",
       "IsPositive": true,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -745,7 +745,7 @@
       "Description": "Никите",
       "DateTime": "2025-04-01T12:13:11.669691959+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -756,7 +756,7 @@
       "Description": "Продукты",
       "DateTime": "2025-04-01T21:19:27.18894426+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -767,7 +767,7 @@
       "Description": "Продукты",
       "DateTime": "2025-04-01T21:29:50.066590432+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""
@@ -778,7 +778,7 @@
       "Description": "Продукты",
       "DateTime": "2025-04-01T21:34:44.762371683+03:00",
       "IsPositive": false,
-      "Category": "",
+      "Category": "Другое",
       "Tags": [],
       "Currency": "BYN",
       "Notes": ""

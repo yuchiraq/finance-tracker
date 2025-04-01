@@ -1,0 +1,25 @@
+{
+  "Entries": [
+    {
+      "Date": "2025-04-01",
+      "Place": "Санта",
+      "StartTime": "9:30",
+      "EndTime": "17:00",
+      "IsDayOff": false
+    },
+    {
+      "Date": "2025-03-30",
+      "Place": "Санта",
+      "StartTime": "9:30",
+      "EndTime": "17:00",
+      "IsDayOff": true
+    },
+    {
+      "Date": "2025-03-28",
+      "Place": "Санта",
+      "StartTime": "9:00",
+      "EndTime": "21:00",
+      "IsDayOff": false
+    }
+  ]
+}

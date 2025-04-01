@@ -1,0 +1,56 @@
+<!-- templates/worklog.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Табель работ</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- templates/worklog.html (фрагмент header) -->
+<header>
+    <h1 onclick="window.location.href='/'" style="cursor: pointer;">Табель работ</h1>
+</header>
+
+        <section class="worklog-section">
+            <div class="card">
+                <h2>История работы</h2>
+                {{ if .entries }}
+                <div class="worklog-list">
+                    {{ range .entries }}
+                    <div class="worklog-item">
+                        <div class="worklog-date">{{ .FormattedDate }}</div>
+                        {{ if .IsDayOff }}
+                        <div class="worklog-details">Выходной</div>
+                        {{ else }}
+                        <div class="worklog-details">
+                            <span>Место:</span> {{ .Place }}<br>
+                            <span>Время:</span> {{ .StartTime }} - {{ .EndTime }}<br>
+                            <span>Длительность:</span> {{ .HoursWorked }}
+                        </div>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                </div>
+                {{ else }}
+                <p class="no-entries">Записей о работе пока нет</p>
+                {{ end }}
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Автоопределение темы
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        if (prefersDarkScheme.matches) {
+            document.body.classList.add("dark-theme");
+        } else {
+            document.body.classList.add("light-theme");
+        }
+    </script>
+</body>
+</html>

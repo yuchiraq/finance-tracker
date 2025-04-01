@@ -1,3 +1,4 @@
+// models/models.go
 package models
 
 import "time"
@@ -16,5 +17,17 @@ type Transaction struct {
 
 type FinanceData struct {
 	Transactions []Transaction
-	Balances     map[string]float64 // Баланс для каждой валюты
+	Balances     map[string]float64
+}
+
+type WorkEntry struct {
+	Date      string // Формат: "2006-01-02"
+	Place     string
+	StartTime string // Формат: "15:04"
+	EndTime   string // Формат: "15:04"
+	IsDayOff  bool
+}
+
+type WorkLogData struct {
+	Entries []WorkEntry
 }

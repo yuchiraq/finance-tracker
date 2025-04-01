@@ -29,8 +29,17 @@ func Init(d *models.FinanceData, saveFunc func()) {
 }
 
 // Index обрабатывает главную страницу
+// handlers/handlers.go
 func Index(c *gin.Context) {
 	fmt.Println("Обработка запроса на главную страницу...")
+
+	// Получаем номер страницы из query-параметра
+	pageStr := c.Query("page")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 1 {
+		page = 1
+	}
+	const pageSize = 10
 
 	// Фильтрация
 	filterType := c.Query("filter-type")
@@ -39,7 +48,6 @@ func Index(c *gin.Context) {
 
 	filteredTrans := []models.Transaction{}
 	for _, t := range data.Transactions {
-		// Фильтр по типу
 		if filterType != "" {
 			if filterType == "income" && !t.IsPositive {
 				continue
@@ -48,7 +56,6 @@ func Index(c *gin.Context) {
 				continue
 			}
 		}
-		// Фильтр по дате
 		if filterDateStart != "" {
 			startDate, err := time.Parse("2006-01-02", filterDateStart)
 			if err == nil && t.DateTime.Before(startDate) {
@@ -69,9 +76,22 @@ func Index(c *gin.Context) {
 		return filteredTrans[i].DateTime.After(filteredTrans[j].DateTime)
 	})
 
+	// Пагинация
+	totalTrans := len(filteredTrans)
+	totalPages := (totalTrans + pageSize - 1) / pageSize
+	if page > totalPages {
+		page = totalPages
+	}
+	start := (page - 1) * pageSize
+	end := start + pageSize
+	if end > totalTrans {
+		end = totalTrans
+	}
+	paginatedTrans := filteredTrans[start:end]
+
 	// Форматирование транзакций для шаблона
-	formattedTrans := make([]gin.H, len(filteredTrans))
-	for i, t := range filteredTrans {
+	formattedTrans := make([]gin.H, len(paginatedTrans))
+	for i, t := range paginatedTrans {
 		formattedTrans[i] = gin.H{
 			"ID":          t.ID,
 			"Amount":      t.Amount,
@@ -121,12 +141,15 @@ func Index(c *gin.Context) {
 		})
 	}
 
-	// Логируем данные, передаваемые в шаблон
-	fmt.Printf("Данные для шаблона:\n")
-	fmt.Printf("  balances: %+v\n", balances)
-	fmt.Printf("  transactions: %+v\n", formattedTrans)
-	fmt.Printf("  monthlyIncome: %.2f\n", monthlyIncome)
-	fmt.Printf("  monthlyExpense: %.2f\n", monthlyExpense)
+	// Данные для пагинации
+	pagination := gin.H{
+		"CurrentPage": page,
+		"TotalPages":  totalPages,
+		"HasPrev":     page > 1,
+		"HasNext":     page < totalPages,
+		"PrevPage":    page - 1,
+		"NextPage":    page + 1,
+	}
 
 	// Рендеринг страницы
 	c.HTML(http.StatusOK, "index.html", gin.H{
@@ -134,6 +157,9 @@ func Index(c *gin.Context) {
 		"transactions":   formattedTrans,
 		"monthlyIncome":  fmt.Sprintf("%.2f", monthlyIncome),
 		"monthlyExpense": fmt.Sprintf("%.2f", monthlyExpense),
+		"pagination":     pagination,
+		"today":          time.Now().Format("2006-01-02"),
+		"workEntries":    workLogData.Entries,
 	})
 }
 
@@ -225,6 +251,85 @@ func AddTransaction(c *gin.Context) {
 	saveDataFunc()
 
 	c.Redirect(http.StatusFound, "/?message=Транзакция добавлена")
+}
+
+func GetTransactions(c *gin.Context) {
+	pageStr := c.Query("page")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 1 {
+		page = 1
+	}
+	const pageSize = 10
+
+	// Фильтрация
+	filterType := c.Query("filter-type")
+	filterDateStart := c.Query("filter-date-start")
+	filterDateEnd := c.Query("filter-date-end")
+
+	filteredTrans := []models.Transaction{}
+	for _, t := range data.Transactions {
+		if filterType != "" {
+			if filterType == "income" && !t.IsPositive {
+				continue
+			}
+			if filterType == "expense" && t.IsPositive {
+				continue
+			}
+		}
+		if filterDateStart != "" {
+			startDate, err := time.Parse("2006-01-02", filterDateStart)
+			if err == nil && t.DateTime.Before(startDate) {
+				continue
+			}
+		}
+		if filterDateEnd != "" {
+			endDate, err := time.Parse("2006-01-02", filterDateEnd)
+			if err == nil && t.DateTime.After(endDate) {
+				continue
+			}
+		}
+		filteredTrans = append(filteredTrans, t)
+	}
+
+	// Сортировка по дате (новые сверху)
+	sort.Slice(filteredTrans, func(i, j int) bool {
+		return filteredTrans[i].DateTime.After(filteredTrans[j].DateTime)
+	})
+
+	// Пагинация
+	totalTrans := len(filteredTrans)
+	totalPages := (totalTrans + pageSize - 1) / pageSize
+	if page > totalPages {
+		page = totalPages
+	}
+	start := (page - 1) * pageSize
+	end := start + pageSize
+	if end > totalTrans {
+		end = totalTrans
+	}
+	paginatedTrans := filteredTrans[start:end]
+
+	// Форматирование транзакций
+	formattedTrans := make([]gin.H, len(paginatedTrans))
+	for i, t := range paginatedTrans {
+		formattedTrans[i] = gin.H{
+			"ID":          t.ID,
+			"Amount":      fmt.Sprintf("%.2f", t.Amount),
+			"Description": t.Description,
+			"DateTime":    t.DateTime.Format("02.01.2006 15:04"),
+			"IsPositive":  t.IsPositive,
+			"Category":    t.Category,
+			"Tags":        strings.Join(t.Tags, ", "),
+			"Currency":    t.Currency,
+			"Notes":       t.Notes,
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"transactions": formattedTrans,
+		"hasNext":      page < totalPages,
+		"nextPage":     page + 1,
+	})
 }
 
 // EditTransaction редактирует существующую транзакцию
@@ -397,4 +502,128 @@ func convertToBYN(amount float64, currency string) float64 {
 		rate = 1.0 // По умолчанию
 	}
 	return amount * rate
+}
+
+// handlers/handlers.go
+var workLogData *models.WorkLogData
+var saveWorkLogFunc func()
+
+func InitWorkLog(w *models.WorkLogData, saveFunc func()) {
+	workLogData = w
+	saveWorkLogFunc = saveFunc
+}
+
+// handlers/handlers.go
+func WorkLog(c *gin.Context) {
+	// Форматируем записи с дополнительной информацией
+	formattedEntries := []gin.H{}
+	for _, entry := range workLogData.Entries {
+		date, _ := time.Parse("2006-01-02", entry.Date)
+		dayOfWeek := map[string]string{
+			"Monday":    "Понедельник",
+			"Tuesday":   "Вторник",
+			"Wednesday": "Среда",
+			"Thursday":  "Четверг",
+			"Friday":    "Пятница",
+			"Saturday":  "Суббота",
+			"Sunday":    "Воскресенье",
+		}[date.Weekday().String()]
+		formattedDate := fmt.Sprintf("%s, %d %s", dayOfWeek, date.Day(), map[string]string{
+			"January":   "января",
+			"February":  "февраля",
+			"March":     "марта",
+			"April":     "апреля",
+			"May":       "мая",
+			"June":      "июня",
+			"July":      "июля",
+			"August":    "августа",
+			"September": "сентября",
+			"October":   "октября",
+			"November":  "ноября",
+			"December":  "декабря",
+		}[date.Month().String()])
+
+		var hoursWorked string
+		if !entry.IsDayOff {
+			start, _ := time.Parse("15:04", entry.StartTime)
+			end, _ := time.Parse("15:04", entry.EndTime)
+			duration := end.Sub(start).Hours()
+			if duration < 0 {
+				duration += 24 // Учитываем переход через полночь
+			}
+			hoursWorked = fmt.Sprintf("%.1f часов", duration)
+		}
+
+		formattedEntries = append(formattedEntries, gin.H{
+			"Date":          entry.Date,
+			"FormattedDate": formattedDate,
+			"Place":         entry.Place,
+			"StartTime":     entry.StartTime,
+			"EndTime":       entry.EndTime,
+			"IsDayOff":      entry.IsDayOff,
+			"HoursWorked":   hoursWorked,
+		})
+	}
+
+	// Сортируем записи по дате (новые сверху)
+	sort.Slice(formattedEntries, func(i, j int) bool {
+		return formattedEntries[i]["Date"].(string) > formattedEntries[j]["Date"].(string)
+	})
+
+	c.HTML(http.StatusOK, "worklog.html", gin.H{
+		"entries": formattedEntries,
+	})
+}
+
+func AddWork(c *gin.Context) {
+	place := c.PostForm("place")
+	startTime := c.PostForm("start_time")
+	endTime := c.PostForm("end_time")
+	isDayOff := c.PostForm("is_day_off") == "on"
+
+	today := time.Now().Format("2006-01-02")
+
+	// Проверяем, есть ли запись за сегодня
+	for _, entry := range workLogData.Entries {
+		if entry.Date == today {
+			c.Redirect(http.StatusFound, "/?message=Запись за сегодня уже существует")
+			return
+		}
+	}
+
+	// Валидация
+	if !isDayOff {
+		if place == "" {
+			c.Redirect(http.StatusFound, "/?message=Ошибка: Укажите место работы")
+			return
+		}
+		if startTime == "" || endTime == "" {
+			c.Redirect(http.StatusFound, "/?message=Ошибка: Укажите время работы")
+			return
+		}
+		_, err := time.Parse("15:04", startTime)
+		if err != nil {
+			c.Redirect(http.StatusFound, "/?message=Ошибка: Неверный формат времени начала")
+			return
+		}
+		_, err = time.Parse("15:04", endTime)
+		if err != nil {
+			c.Redirect(http.StatusFound, "/?message=Ошибка: Неверный формат времени окончания")
+			return
+		}
+	}
+
+	// Добавляем запись
+	newEntry := models.WorkEntry{
+		Date:      today,
+		Place:     place,
+		StartTime: startTime,
+		EndTime:   endTime,
+		IsDayOff:  isDayOff,
+	}
+	workLogData.Entries = append(workLogData.Entries, newEntry)
+
+	saveWorkLogFunc()
+
+	c.Redirect(http.StatusFound, "/?message=Запись о работе добавлена")
 }
