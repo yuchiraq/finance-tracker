@@ -386,6 +386,9 @@ body.dark-theme .transaction-date {
   gap: 8px;
 }
 
+/* static/style.css (продолжение) */
+
+/* Кнопки действий (редактировать/удалить) */
 .action-btn {
   background: #e0e0e0;
   color: #1c2526;
@@ -393,7 +396,7 @@ body.dark-theme .transaction-date {
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 8px;
   font-size: 14px;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 body.dark-theme .action-btn {
@@ -461,7 +464,8 @@ body.dark-theme .work-form-section .form-group input:focus {
 /* История работы */
 .worklog-item {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   padding: 16px;
   margin-bottom: 12px;
   border-radius: 16px;
@@ -490,7 +494,7 @@ body.dark-theme .worklog-item:hover {
   font-size: 16px;
   font-weight: 500;
   color: #1c2526;
-  margin-bottom: 8px;
+  flex: 1;
 }
 
 body.dark-theme .worklog-date {
@@ -500,13 +504,15 @@ body.dark-theme .worklog-date {
 .worklog-details {
   font-size: 14px;
   color: #666;
+  flex: 2;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
 }
 
 body.dark-theme .worklog-details {
-  color: #d0d0d0; /* Улучшаем читаемость в тёмной теме */
+  color: #d0d0d0;
 }
 
 .worklog-details span {
@@ -525,4 +531,153 @@ body.dark-theme .worklog-details span {
 
 body.dark-theme .no-entries {
   color: #a0a0a0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .balance-amount {
+    font-size: 28px;
+  }
+
+  .balance-currency {
+    font-size: 20px;
+  }
+
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .transaction-content {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .transaction-amount {
+    font-size: 14px;
+  }
+
+  .transaction-description {
+    font-size: 14px;
+  }
+
+  .transaction-tags,
+  .transaction-notes,
+  .transaction-date {
+    font-size: 12px;
+  }
+
+  .transaction-actions {
+    align-self: flex-end;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .worklog-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .worklog-date {
+    font-size: 14px;
+  }
+
+  .worklog-details {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .balance-amount {
+    font-size: 24px;
+  }
+
+  .balance-currency {
+    font-size: 18px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .action-btn {
+    padding: 6px;
+    font-size: 12px;
+  }
+}
+
+/* static/style.css (добавляем в конец файла) */
+
+/* Секция экспорта */
+.export-section .form-group {
+  margin-bottom: 20px;
+}
+
+.export-section .form-group input[type="month"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background: #f9f9f9;
+  color: #1c2526;
+  transition: border-color 0.2s ease;
+}
+
+body.dark-theme .export-section .form-group input[type="month"] {
+  background: #2c3639;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f2f4f8;
+}
+
+.export-section .form-group input[type="month"]:focus {
+  outline: none;
+  border-color: #007aff;
+  background: #fff;
+}
+
+body.dark-theme .export-section .form-group input[type="month"]:focus {
+  background: #3f4e50;
 }

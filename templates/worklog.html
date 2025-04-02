@@ -11,10 +11,26 @@
 </head>
 <body>
     <div class="container">
-        <!-- templates/worklog.html (фрагмент header) -->
-<header>
-    <h1 onclick="window.location.href='/'" style="cursor: pointer;">Табель работ</h1>
-</header>
+        <header>
+            <h1 onclick="window.location.href='/'" style="cursor: pointer;">Табель работ</h1>
+        </header>
+
+        <div class="notification" id="notification" style="display: none;"></div>
+
+        <section class="export-section">
+            <div class="card">
+                <h2>Экспорт табеля</h2>
+                <form action="/worklog/export" method="GET">
+                    <div class="form-group">
+                        <label for="month">Выберите месяц</label>
+                        <input type="month" id="month" name="month" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn apply-btn">Экспорт в PDF</button>
+                    </div>
+                </form>
+            </div>
+        </section>
 
         <section class="worklog-section">
             <div class="card">
@@ -28,9 +44,9 @@
                         <div class="worklog-details">Выходной</div>
                         {{ else }}
                         <div class="worklog-details">
-                            <span>Место:</span> {{ .Place }}<br>
-                            <span>Время:</span> {{ .StartTime }} - {{ .EndTime }}<br>
-                            <span>Длительность:</span> {{ .HoursWorked }}
+                            <div><span>Место:</span> {{ .Place }}</div>
+                            <div><span>Время:</span> {{ .StartTime }} - {{ .EndTime }}</div>
+                            <div><span>Длительность:</span> {{ .HoursWorked }}</div>
                         </div>
                         {{ end }}
                     </div>
@@ -50,6 +66,18 @@
             document.body.classList.add("dark-theme");
         } else {
             document.body.classList.add("light-theme");
+        }
+
+        // Уведомления
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        if (message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
         }
     </script>
 </body>

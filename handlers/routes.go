@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine, financeStore *storage.FinanceStorage, workLogStore *storage.WorkLogStorage) {
-	financeHandler := NewFinanceHandler(financeStore, workLogStore) // Передаём оба хранилища
+	financeHandler := NewFinanceHandler(financeStore, workLogStore)
 	workLogHandler := NewWorkLogHandler(workLogStore)
 
 	// Маршруты для финансов
@@ -21,4 +21,5 @@ func RegisterRoutes(r *gin.Engine, financeStore *storage.FinanceStorage, workLog
 	// Маршруты для табеля
 	r.GET("/worklog", workLogHandler.WorkLog)
 	r.POST("/add-work", workLogHandler.AddWork)
+	r.GET("/worklog/export", workLogHandler.ExportWorkLogPDF) // Новый маршрут для экспорта
 }
