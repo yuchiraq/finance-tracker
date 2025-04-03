@@ -1,0 +1,263 @@
+<!-- templates/stats.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 onclick="window.location.href='/'" style="cursor: pointer;">Статистика</h1>
+        </header>
+
+        <div class="notification" id="notification" style="display: none;"></div>
+
+        <section class="filter-section">
+            <div class="card">
+                <h2>Выберите период</h2>
+                <form action="/stats" method="GET">
+                    <div class="form-group">
+                        <label for="period">Период</label>
+                        <select id="period" name="period" onchange="updateDateInput()">
+                            <option value="day" {{ if eq .SelectedPeriod "day" }}selected{{ end }}>День</option>
+                            <option value="week" {{ if eq .SelectedPeriod "week" }}selected{{ end }}>Неделя</option>
+                            <option value="month" {{ if eq .SelectedPeriod "month" }}selected{{ end }}>Месяц</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Дата</label>
+                        <input type="date" id="date" name="date" value="{{ .SelectedDate }}" required>
+                    </div>
+                    <button type="submit" class="btn apply-btn">Применить</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="card">
+                <h2>Статистика за {{ .Period }}</h2>
+                <p>Доходы: <span class="income-text">{{ printf "%.2f" .TotalIncome }} BYN</span></p>
+                <p>Расходы: <span class="expense-text">{{ printf "%.2f" .TotalExpense }} BYN</span></p>
+                <p>Чистый баланс: <span class="{{ if gt .NetBalance 0.0 }}income-text{{ else }}expense-text{{ end }}">{{ printf "%.2f" .NetBalance }} BYN</span></p>
+                <p>Средние расходы в день: <span class="expense-text">{{ printf "%.2f" .AvgDailyExpense }} BYN</span></p>
+            </div>
+        </section>
+
+        <section class="chart-section">
+            <div class="card">
+                <h2>График доходов и расходов</h2>
+                <canvas id="financeChart"></canvas>
+            </div>
+        </section>
+
+        <section class="top-transactions">
+            <div class="card">
+                <h2>Топ-5 доходов</h2>
+                {{ if .TopIncomes }}
+                <ul>
+                    {{ range .TopIncomes }}
+                    <li>{{ .DateTime }}: {{ .Description }} — <span class="income-text">{{ .Amount }} BYN</span></li>
+                    {{ end }}
+                </ul>
+                {{ else }}
+                <p class="no-entries">Доходов за этот период нет.</p>
+                {{ end }}
+            </div>
+            <div class="card">
+                <h2>Топ-5 расходов</h2>
+                {{ if .TopExpenses }}
+                <ul>
+                    {{ range .TopExpenses }}
+                    <li>{{ .DateTime }}: {{ .Description }} — <span class="expense-text">{{ .Amount }} BYN</span></li>
+                    {{ end }}
+                </ul>
+                {{ else }}
+                <p class="no-entries">Расходов за этот период нет.</p>
+                {{ end }}
+            </div>
+        </section>
+
+        <section class="insights-section">
+            <div class="card">
+                <h2>Инсайты</h2>
+                {{ if .Insights }}
+                <ul>
+                    {{ range .Insights }}
+                    <li>{{ . }}</li>
+                    {{ end }}
+                </ul>
+                {{ else }}
+                <p class="no-entries">Инсайтов пока нет.</p>
+                {{ end }}
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Автоопределение темы
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        if (prefersDarkScheme.matches) {
+            document.body.classList.add("dark-theme");
+        } else {
+            document.body.classList.add("light-theme");
+        }
+
+        // Уведомления
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        if (message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Адаптация поля даты
+        function updateDateInput() {
+            const period = document.getElementById('period').value;
+            const dateInput = document.getElementById('date');
+            if (period === 'month') {
+                dateInput.type = 'month';
+                dateInput.value = '{{ .SelectedDate }}';
+            } else {
+                dateInput.type = 'date';
+                dateInput.value = '{{ .SelectedDate }}';
+            }
+        }
+        updateDateInput();
+
+        // График
+        let chartData;
+        try {
+            chartData = JSON.parse('{{ .ChartData | toJson }}');
+            console.log('Chart Data:', chartData);
+        } catch (e) {
+            console.error('Error parsing ChartData:', e);
+            chartData = { labels: [], incomes: [], expenses: [] };
+        }
+
+        const ctx = document.getElementById('financeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels || [],
+                datasets: [
+                    {
+                        label: 'Доходы',
+                        data: chartData.incomes || [],
+                        borderColor: 'var(--income-color)',
+                        backgroundColor: 'rgba(52, 199, 89, 0.2)',
+                        fill: true,
+                    },
+                    {
+                        label: 'Расходы',
+                        data: chartData.expenses || [],
+                        borderColor: 'var(--expense-color)',
+                        backgroundColor: 'rgba(255, 59, 48, 0.2)',
+                        fill: true,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Дата'
+                        },
+                        ticks: {
+                            maxTicksLimit: 10,
+                            autoSkip: true
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Сумма (BYN)'
+                        },
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+
+        // В stats.html, внутри <script>
+//const ctx = document.getElementById('financeChart').getContext('2d');
+const gradientIncome = ctx.createLinearGradient(0, 0, 0, 400);
+gradientIncome.addColorStop(0, 'rgba(52, 199, 89, 0.8)');
+gradientIncome.addColorStop(1, 'rgba(52, 199, 89, 0.2)');
+
+const gradientExpense = ctx.createLinearGradient(0, 0, 0, 400);
+gradientExpense.addColorStop(0, 'rgba(255, 59, 48, 0.8)');
+gradientExpense.addColorStop(1, 'rgba(255, 59, 48, 0.2)');
+
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: chartData.labels || [],
+    datasets: [
+      {
+        label: 'Доходы',
+        data: chartData.incomes || [],
+        borderColor: 'var(--income-color)',
+        backgroundColor: gradientIncome,
+        fill: true,
+        tension: 0.4,
+      },
+      {
+        label: 'Расходы',
+        data: chartData.expenses || [],
+        borderColor: 'var(--expense-color)',
+        backgroundColor: gradientExpense,
+        fill: true,
+        tension: 0.4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Дата'
+        },
+        ticks: {
+          maxTicksLimit: 10,
+          autoSkip: true
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Сумма (BYN)'
+        },
+        beginAtZero: true
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top'
+      }
+    }
+  }
+});
+    </script>
+</body>
+</html>

@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <header>
+        <h1><a href="/worklog">Финансы</a></h1>
+        <a href="/stats" class="stats-btn">Статистика</a>
+      </header>
     <div class="container">
-        <!-- templates/index.html (фрагмент header) -->
-<header>
-    <h1 onclick="window.location.href='/worklog'" style="cursor: pointer;">Финансовый трекер</h1>
-</header>
 
         <div class="notification" id="notification" style="display: none;"></div>
 
@@ -53,7 +53,7 @@
                     <input type="hidden" id="edit-id" name="edit-id" value="">
                     <div class="form-group">
                         <label for="amount">Сумма</label>
-                        <input type="text" id="amount" name="amount" placeholder="Введите сумму (например, 123.45)" required pattern="^\d*\.?\d*$" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46)">
+                        <input type="number" id="amount" name="amount" placeholder="Введите сумму (например, 123.45)" required pattern="^\d*\.?\d*$" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46)">
                     </div>
 
                     <div class="form-group">
@@ -92,35 +92,34 @@
             {{ end }}
         {{ end }}
         {{ if not $hasWorkToday }}
-        <!-- templates/index.html (фрагмент формы работы) -->
-<section class="work-form-section">
-    <div class="card">
-        <h2>Работа сегодня</h2>
-        <form id="work-form" action="/add-work" method="POST">
-            <div class="form-group">
-                <label for="place">Место работы</label>
-                <input type="text" id="place" name="place" placeholder="Где работали">
+        <section class="work-form-section">
+            <div class="card">
+                <h2>Работа сегодня</h2>
+                <form id="work-form" action="/add-work" method="POST">
+                    <div class="form-group">
+                        <label for="place">Место работы</label>
+                        <input type="text" id="place" name="place" placeholder="Где работали">
+                    </div>
+                    <div class="form-group">
+                        <label for="start_time">С какого времени</label>
+                        <input type="time" id="start_time" name="start_time" value="09:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_time">До какого времени</label>
+                        <input type="time" id="end_time" name="end_time" value="17:00">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn apply-btn">Добавить</button>
+                        <button type="button" class="btn secondary" onclick="setDayOff()">Выходной</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="start_time">С какого времени</label>
-                <input type="time" id="start_time" name="start_time" value="09:00">
-            </div>
-            <div class="form-group">
-                <label for="end_time">До какого времени</label>
-                <input type="time" id="end_time" name="end_time" value="17:00">
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="btn apply-btn">Добавить</button>
-                <button type="button" class="btn secondary" onclick="setDayOff()">Выходной</button>
-            </div>
-        </form>
-    </div>
-</section>
+        </section>
         {{ end }}
 
         <section class="filter-section">
             <div class="filter-toggle">
-                <button id="toggle-filter" class="btn filter-btn">Фильтры ▼</button>
+                <button id="toggle-filter" class="btn filter-btn" style="display: none;">Фильтры ▼</button>
             </div>
             <div class="card filter-content" id="filter-content" style="display: none;">
                 <h2>Фильтровать операции</h2>
@@ -151,28 +150,26 @@
                 <h2>История операций</h2>
 
                 {{ if .transactions }}
-                <!-- templates/index.html (фрагмент истории операций) -->
-<div class="transactions-list" id="transactions-list">
-    {{ range .transactions }}
-    <div class="transaction-item" data-id="{{ .ID }}" data-amount="{{ .Amount }}" data-description="{{ .Description }}" data-category="{{ .Category }}" data-type="{{ if .IsPositive }}income{{ else }}expense{{ end }}" data-tags="{{ .Tags }}" data-currency="{{ .Currency }}" data-notes="{{ .Notes }}">
-        <div class="transaction-content">
-            <div class="transaction-amount {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ .Amount }} {{ .Currency }}</div>
-            <div class="transaction-details">
-                <div class="transaction-description {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ .Description }}</div>
-                <div class="transaction-tags">{{ if .Tags }}Теги: {{ .Tags }}{{ end }}</div>
-                <div class="transaction-notes">{{ if .Notes }}Заметки: {{ .Notes }}{{ end }}</div>
-                <div class="transaction-date">{{ .DateTime }}</div>
-            </div>
-        </div>
-        <div class="transaction-actions">
-            <button class="action-btn edit-btn">✎</button>
-            <form action="/delete/{{ .ID }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту транзакцию?');">
-                <button type="submit" class="action-btn delete-btn">✕</button>
-            </form>
-        </div>
-    </div>
-    {{ end }}
-</div>
+                <div class="transactions-list" id="transactions-list">
+                    {{ range .transactions }}
+                    <div class="transaction-item" data-id="{{ .ID }}" data-amount="{{ .Amount }}" data-description="{{ .Description }}" data-type="{{ if .IsPositive }}income{{ else }}expense{{ end }}" data-currency="{{ .Currency }}" data-notes="{{ .Notes }}">
+                        <div class="transaction-content">
+                            <div class="transaction-amount {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ .Amount }} {{ .Currency }}</div>
+                            <div class="transaction-details">
+                                <div class="transaction-description {{ if .IsPositive }}income-text{{ else }}expense-text{{ end }}">{{ .Description }}</div>
+                                <div class="transaction-notes">{{ if .Notes }}Заметки: {{ .Notes }}{{ end }}</div>
+                                <div class="transaction-date">{{ .DateTime }}</div>
+                            </div>
+                        </div>
+                        <div class="transaction-actions">
+                            <button class="action-btn edit-btn">✎</button>
+                            <form action="/delete/{{ .ID }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту транзакцию?');">
+                                <button type="submit" class="action-btn delete-btn">✕</button>
+                            </form>
+                        </div>
+                    </div>
+                    {{ end }}
+                </div>
 
                 {{ if .pagination.HasNext }}
                 <div class="load-more">
@@ -227,14 +224,12 @@
                 const amount = transactionItem.dataset.amount;
                 const description = transactionItem.dataset.description;
                 const type = transactionItem.dataset.type;
-                const tags = transactionItem.dataset.tags;
                 const currency = transactionItem.dataset.currency;
                 const notes = transactionItem.dataset.notes;
 
                 document.getElementById('edit-id').value = id;
                 document.getElementById('amount').value = amount;
                 document.getElementById('description').value = description;
-                document.getElementById('tags').value = tags;
                 document.getElementById('currency').value = currency;
                 document.getElementById('notes').value = notes;
 
@@ -263,107 +258,102 @@
             document.getElementById('cancel-edit').style.display = 'none';
         });
 
-        // Сворачивание/разворачивание фильтров
-        document.getElementById('toggle-filter').addEventListener('click', () => {
-            const filterContent = document.getElementById('filter-content');
-            const toggleButton = document.getElementById('toggle-filter');
-            if (filterContent.style.display === 'none') {
-                filterContent.style.display = 'block';
-                toggleButton.textContent = 'Фильтры ▲';
-            } else {
-                filterContent.style.display = 'none';
-                toggleButton.textContent = 'Фильтры ▼';
-            }
-        });
-
-        // Управление полями формы работы
-        function toggleWorkFields() {
-            const isDayOff = document.getElementById('is_day_off').checked;
-            const placeInput = document.getElementById('place');
-            const startTimeInput = document.getElementById('start_time');
-            const endTimeInput = document.getElementById('end_time');
-
-            placeInput.disabled = isDayOff;
-            startTimeInput.disabled = isDayOff;
-            endTimeInput.disabled = isDayOff;
-
-            if (isDayOff) {
-                placeInput.value = '';
-                startTimeInput.value = '09:00';
-                endTimeInput.value = '17:00';
-            }
-        }
 
         // Динамическая подгрузка транзакций
-    const loadMoreBtn = document.getElementById('load-more-btn');
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', () => {
-            const nextPage = loadMoreBtn.dataset.nextPage;
-            fetch(`/api/transactions?page=${nextPage}`)
-            .then(response => response.json())
-            .then(data => {
-                const transactionsList = document.getElementById('transactions-list');
-                data.transactions.forEach(t => {
-                    const div = document.createElement('div');
-                    div.className = 'transaction-item';
-                    div.dataset.id = t.ID;
-                    div.dataset.amount = t.Amount;
-                    div.dataset.description = t.Description;
-                    div.dataset.type = t.IsPositive ? 'income' : 'expense';
-                    div.dataset.tags = t.Tags;
-                    div.dataset.currency = t.Currency;
-                    div.dataset.notes = t.Notes;
-                    div.innerHTML = `
-                        <div class="transaction-content">
-                            <div class="transaction-amount ${t.IsPositive ? 'income-text' : 'expense-text'}">${t.Amount} ${t.Currency}</div>
-                            <div class="transaction-details">
-                                <div class="transaction-description ${t.IsPositive ? 'income-text' : 'expense-text'}">${t.Description}</div>
-                                <div class="transaction-tags">${t.Tags ? 'Теги: ' + t.Tags : ''}</div>
-                                <div class="transaction-notes">${t.Notes ? 'Заметки: ' + t.Notes : ''}</div>
-                                <div class="transaction-date">${t.DateTime}</div>
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                const nextPage = loadMoreBtn.dataset.nextPage;
+                fetch(`/api/transactions?page=${nextPage}`)
+                .then(response => response.json())
+                .then(data => {
+                    const transactionsList = document.getElementById('transactions-list');
+                    data.transactions.forEach(t => {
+                        const div = document.createElement('div');
+                        div.className = 'transaction-item';
+                        div.dataset.id = t.ID;
+                        div.dataset.amount = t.Amount;
+                        div.dataset.description = t.Description;
+                        div.dataset.type = t.IsPositive ? 'income' : 'expense';
+                        div.dataset.currency = t.Currency;
+                        div.dataset.notes = t.Notes;
+                        div.innerHTML = `
+                            <div class="transaction-content">
+                                <div class="transaction-amount ${t.IsPositive ? 'income-text' : 'expense-text'}">${t.Amount} ${t.Currency}</div>
+                                <div class="transaction-details">
+                                    <div class="transaction-description ${t.IsPositive ? 'income-text' : 'expense-text'}">${t.Description}</div>
+                                    <div class="transaction-notes">${t.Notes ? 'Заметки: ' + t.Notes : ''}</div>
+                                    <div class="transaction-date">${t.DateTime}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="transaction-actions">
-                            <button class="action-btn edit-btn">✎</button>
-                            <form action="/delete/${t.ID}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту транзакцию?');">
-                                <button type="submit" class="action-btn delete-btn">✕</button>
-                            </form>
-                        </div>
-                    `;
-                    transactionsList.appendChild(div);
+                            <div class="transaction-actions">
+                                <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                <form action="/delete/${t.ID}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту транзакцию?');">
+                                    <button type="submit" class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
+                        `;
+                        transactionsList.appendChild(div);
+                    });
+
+                    if (data.hasNext) {
+                        loadMoreBtn.dataset.nextPage = data.nextPage;
+                    } else {
+                        loadMoreBtn.remove();
+                    }
+
+                    // Перепривязываем обработчики для новых кнопок редактирования
+                    document.querySelectorAll('.edit-btn').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const transactionItem = button.closest('.transaction-item');
+                            const id = transactionItem.dataset.id;
+                            const amount = transactionItem.dataset.amount;
+                            const description = transactionItem.dataset.description;
+                            const type = transactionItem.dataset.type;
+                            const currency = transactionItem.dataset.currency;
+                            const notes = transactionItem.dataset.notes;
+
+                            document.getElementById('edit-id').value = id;
+                            document.getElementById('amount').value = amount;
+                            document.getElementById('description').value = description;
+                            document.getElementById('currency').value = currency;
+                            document.getElementById('notes').value = notes;
+
+                            const form = document.getElementById('transaction-form');
+                            form.action = `/edit/${id}`;
+                            document.getElementById('submit-income-btn').textContent = 'Сохранить (Доход)';
+                            document.getElementById('submit-expense-btn').textContent = 'Сохранить (Расход)';
+                            document.getElementById('submit-income-btn').style.display = type === 'income' ? 'inline-block' : 'none';
+                            document.getElementById('submit-expense-btn').style.display = type === 'expense' ? 'inline-block' : 'none';
+                            document.getElementById('cancel-edit').style.display = 'inline-block';
+
+                            form.scrollIntoView({ behavior: 'smooth' });
+                        });
+                    });
+                })
+                .catch(err => {
+                    console.error('Ошибка подгрузки транзакций:', err);
                 });
-
-                if (data.hasNext) {
-                    loadMoreBtn.dataset.nextPage = data.nextPage;
-                } else {
-                    loadMoreBtn.remove();
-                }
-
-                // ... (остальной код для редактирования остаётся без изменений)
-            })
-            .catch(err => {
-                console.error('Ошибка подгрузки транзакций:', err);
             });
-        });
+        }
 
         function setDayOff() {
-        fetch('/add-work', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'is_day_off=true'
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-            }
-        })
-        .catch(err => {
-            console.error('Ошибка установки выходного дня:', err);
-        });
-    }
-    }
+            fetch('/add-work', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'is_day_off=true'
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            })
+            .catch(err => {
+                console.error('Ошибка установки выходного дня:', err);
+            });
+        }
     </script>
 </body>
 </html>

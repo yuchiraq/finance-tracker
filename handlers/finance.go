@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"sort"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +15,7 @@ import (
 
 type FinanceHandler struct {
 	financeStore *storage.FinanceStorage
-	workLogStore *storage.WorkLogStorage // Добавляем хранилище табеля
+	workLogStore *storage.WorkLogStorage
 }
 
 func NewFinanceHandler(financeStore *storage.FinanceStorage, workLogStore *storage.WorkLogStorage) *FinanceHandler {
@@ -94,8 +93,6 @@ func (h *FinanceHandler) Index(c *gin.Context) {
 			"Description": t.Description,
 			"DateTime":    t.DateTime.Format("02.01.2006 15:04"),
 			"IsPositive":  t.IsPositive,
-			"Category":    t.Category,
-			"Tags":        strings.Join(t.Tags, ", "),
 			"Currency":    t.Currency,
 			"Notes":       t.Notes,
 		}
@@ -156,7 +153,7 @@ func (h *FinanceHandler) Index(c *gin.Context) {
 		"monthlyExpense": fmt.Sprintf("%.2f", monthlyExpense),
 		"pagination":     pagination,
 		"today":          time.Now().Format("2006-01-02"),
-		"workEntries":    workData.Entries, // Передаём записи о работе
+		"workEntries":    workData.Entries,
 	})
 }
 
@@ -226,8 +223,6 @@ func (h *FinanceHandler) GetTransactions(c *gin.Context) {
 			"Description": t.Description,
 			"DateTime":    t.DateTime.Format("02.01.2006 15:04"),
 			"IsPositive":  t.IsPositive,
-			"Category":    t.Category,
-			"Tags":        strings.Join(t.Tags, ", "),
 			"Currency":    t.Currency,
 			"Notes":       t.Notes,
 		}
@@ -290,7 +285,6 @@ func (h *FinanceHandler) AddTransaction(c *gin.Context) {
 	c.Redirect(http.StatusFound, "/?message=Транзакция добавлена")
 }
 
-// handlers/finance.go (продолжение)
 func (h *FinanceHandler) EditTransaction(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)

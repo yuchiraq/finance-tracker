@@ -6,6 +6,7 @@ import (
 	"finance-tracker/handlers"
 	"finance-tracker/storage"
 	"fmt"
+	"html/template"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,6 +31,12 @@ func main() {
 
 	// Настройка Gin
 	r := gin.Default()
+
+	r.SetFuncMap(template.FuncMap{
+		"toJson": func(v interface{}) template.JS {
+			return template.JS(fmt.Sprintf("%v", v))
+		},
+	})
 
 	// Middleware авторизации
 	r.Use(auth.Middleware())

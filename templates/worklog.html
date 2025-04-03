@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <header>
+        <h1><a href="/">Табель</a></h1>
+    </header>
     <div class="container">
-        <header>
-            <h1 onclick="window.location.href='/'" style="cursor: pointer;">Табель работ</h1>
-        </header>
 
         <div class="notification" id="notification" style="display: none;"></div>
 
@@ -38,17 +39,46 @@
                 {{ if .entries }}
                 <div class="worklog-list">
                     {{ range .entries }}
-                    <div class="worklog-item">
-                        <div class="worklog-date">{{ .FormattedDate }}</div>
-                        {{ if .IsDayOff }}
-                        <div class="worklog-details">Выходной</div>
-                        {{ else }}
-                        <div class="worklog-details">
-                            <div><span>Место:</span> {{ .Place }}</div>
-                            <div><span>Время:</span> {{ .StartTime }} - {{ .EndTime }}</div>
-                            <div><span>Длительность:</span> {{ .HoursWorked }}</div>
+                    <div class="worklog-item" data-date="{{ .Date }}" data-place="{{ .Place }}" data-start-time="{{ .StartTime }}" data-end-time="{{ .EndTime }}" data-is-day-off="{{ .IsDayOff }}">
+                        <div class="worklog-content">
+                            <div class="worklog-date">{{ .FormattedDate }}</div>
+                            {{ if .IsDayOff }}
+                            <div class="worklog-details">Выходной</div>
+                            {{ else }}
+                            <div class="worklog-details">
+                                <div><span>Место:</span> {{ .Place }}</div>
+                                <div><span>Время:</span> {{ .StartTime }} - {{ .EndTime }}</div>
+                                <div><span>Длительность:</span> {{ .HoursWorked }}</div>
+                            </div>
+                            {{ end }}
                         </div>
-                        {{ end }}
+                        <div class="worklog-actions">
+                            <button class="action-btn edit-work-btn"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+                    <div class="edit-work-form" id="edit-form-{{ .Date }}" style="display: none;">
+                        <form action="/edit-work/{{ .Date }}" method="POST">
+                            <div class="form-group">
+                                <label for="place-{{ .Date }}">Место работы</label>
+                                <input type="text" id="place-{{ .Date }}" name="place" value="{{ .Place }}" placeholder="Где работали">
+                            </div>
+                            <div class="form-group">
+                                <label for="start_time-{{ .Date }}">С какого времени</label>
+                                <input type="time" id="start_time-{{ .Date }}" name="start_time" value="{{ .StartTime }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="end_time-{{ .Date }}">До какого времени</label>
+                                <input type="time" id="end_time-{{ .Date }}" name="end_time" value="{{ .EndTime }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="is_day_off-{{ .Date }}">Выходной</label>
+                                <input type="checkbox" id="is_day_off-{{ .Date }}" name="is_day_off" {{ if .IsDayOff }}checked{{ end }} onchange="toggleWorkFields('{{ .Date }}')">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn apply-btn">Сохранить</button>
+                                <button type="button" class="btn secondary cancel-edit-work" data-date="{{ .Date }}">Отменить</button>
+                            </div>
+                        </form>
                     </div>
                     {{ end }}
                 </div>
@@ -78,6 +108,47 @@
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 3000);
+        }
+
+        // Редактирование записи о работе
+        document.querySelectorAll('.edit-work-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const worklogItem = button.closest('.worklog-item');
+                const date = worklogItem.dataset.date;
+                const editForm = document.getElementById(`edit-form-${date}`);
+                editForm.style.display = 'block';
+                worklogItem.style.display = 'none';
+                toggleWorkFields(date);
+            });
+        });
+
+        // Отмена редактирования
+        document.querySelectorAll('.cancel-edit-work').forEach(button => {
+            button.addEventListener('click', () => {
+                const date = button.dataset.date;
+                const editForm = document.getElementById(`edit-form-${date}`);
+                const worklogItem = document.querySelector(`.worklog-item[data-date="${date}"]`);
+                editForm.style.display = 'none';
+                worklogItem.style.display = 'flex';
+            });
+        });
+
+        // Управление полями формы редактирования
+        function toggleWorkFields(date) {
+            const isDayOff = document.getElementById(`is_day_off-${date}`).checked;
+            const placeInput = document.getElementById(`place-${date}`);
+            const startTimeInput = document.getElementById(`start_time-${date}`);
+            const endTimeInput = document.getElementById(`end_time-${date}`);
+
+            placeInput.disabled = isDayOff;
+            startTimeInput.disabled = isDayOff;
+            endTimeInput.disabled = isDayOff;
+
+            if (isDayOff) {
+                placeInput.value = '';
+                startTimeInput.value = '09:00';
+                endTimeInput.value = '17:00';
+            }
         }
     </script>
 </body>

@@ -10,6 +10,8 @@ import (
 func RegisterRoutes(r *gin.Engine, financeStore *storage.FinanceStorage, workLogStore *storage.WorkLogStorage) {
 	financeHandler := NewFinanceHandler(financeStore, workLogStore)
 	workLogHandler := NewWorkLogHandler(workLogStore)
+	statsHandler := NewStatsHandler(financeStore)
+	exportHandler := NewExportHandler(workLogStore)
 
 	// Маршруты для финансов
 	r.GET("/", financeHandler.Index)
@@ -21,5 +23,9 @@ func RegisterRoutes(r *gin.Engine, financeStore *storage.FinanceStorage, workLog
 	// Маршруты для табеля
 	r.GET("/worklog", workLogHandler.WorkLog)
 	r.POST("/add-work", workLogHandler.AddWork)
-	r.GET("/worklog/export", workLogHandler.ExportWorkLogPDF) // Новый маршрут для экспорта
+	r.POST("/edit-work/:date", workLogHandler.EditWork) // Новый маршрут для редактирования
+	r.GET("/worklog/export", exportHandler.ExportWorkLogPDF)
+
+	// Маршруты для статистики
+	r.GET("/stats", statsHandler.Stats)
 }

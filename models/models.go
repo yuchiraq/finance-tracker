@@ -9,8 +9,6 @@ type Transaction struct {
 	Description string
 	DateTime    time.Time
 	IsPositive  bool
-	Category    string
-	Tags        []string
 	Currency    string
 	Notes       string
 }
