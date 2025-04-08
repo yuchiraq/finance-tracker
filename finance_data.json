@@ -674,9 +674,171 @@
       "IsPositive": false,
       "Currency": "BYN",
       "Notes": ""
+    },
+    {
+      "ID": 78,
+      "Amount": 6,
+      "Description": "Квас попить",
+      "DateTime": "2025-04-04T16:28:04.737419462+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 79,
+      "Amount": 10,
+      "Description": "Ире",
+      "DateTime": "2025-04-04T16:28:31.299818243+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 80,
+      "Amount": 5,
+      "Description": "Энергетик конфеты",
+      "DateTime": "2025-04-05T15:30:29.676388817+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 81,
+      "Amount": 25,
+      "Description": "Пицца итальяна",
+      "DateTime": "2025-04-05T17:17:34.785816694+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 82,
+      "Amount": 40,
+      "Description": "Ире",
+      "DateTime": "2025-04-05T17:19:50.407860972+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 83,
+      "Amount": 30,
+      "Description": "Ира отдала",
+      "DateTime": "2025-04-05T17:20:00.439024944+03:00",
+      "IsPositive": true,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 84,
+      "Amount": 70,
+      "Description": "Бабушка",
+      "DateTime": "2025-04-05T18:55:18.625374202+03:00",
+      "IsPositive": true,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 85,
+      "Amount": 25,
+      "Description": "Корм собаке",
+      "DateTime": "2025-04-05T19:57:58.101032501+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 86,
+      "Amount": 6,
+      "Description": "Мыло и клей",
+      "DateTime": "2025-04-05T20:38:39.373774714+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 87,
+      "Amount": 400,
+      "Description": "Бабушка Вера",
+      "DateTime": "2025-04-06T15:07:23.747765883+03:00",
+      "IsPositive": true,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 88,
+      "Amount": 170,
+      "Description": "Жилетка",
+      "DateTime": "2025-04-06T16:09:20.59161865+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 89,
+      "Amount": 280,
+      "Description": "Кеды",
+      "DateTime": "2025-04-06T16:09:35.63643951+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 90,
+      "Amount": 12,
+      "Description": "Интернет",
+      "DateTime": "2025-04-06T16:09:45.279800245+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 91,
+      "Amount": 40,
+      "Description": "Бабушка",
+      "DateTime": "2025-04-06T18:41:33.895228718+03:00",
+      "IsPositive": true,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 92,
+      "Amount": 30,
+      "Description": "Продукты",
+      "DateTime": "2025-04-07T08:07:21.520880819+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 93,
+      "Amount": 8,
+      "Description": "Светон Ире",
+      "DateTime": "2025-04-07T19:26:03.313255848+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 94,
+      "Amount": 24,
+      "Description": "Корректировка баланса",
+      "DateTime": "2025-04-07T19:49:51.235772449+03:00",
+      "IsPositive": false,
+      "Currency": "BYN",
+      "Notes": ""
+    },
+    {
+      "ID": 95,
+      "Amount": 1,
+      "Description": "Корректировка баланса",
+      "DateTime": "2025-04-08T17:07:20.749965716+03:00",
+      "IsPositive": true,
+      "Currency": "BYN",
+      "Notes": ""
     }
   ],
   "Balances": {
-    "BYN": 104.07000000000036
+    "BYN": 4.070000000000391
   }
 }

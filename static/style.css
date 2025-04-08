@@ -7,7 +7,7 @@
   --primary-text-dark: #f2f4f8;
   --background-light: #f5f5f7;
   --background-light-end: #e8ecef;
-  --background-dark: #1c2526;
+  --background-dark: rgb(28, 37, 38);
   --background-dark-end: #2c3436;
   --card-bg-light: rgba(255, 255, 255, 0.8);
   --card-bg-light-hover: rgba(255, 255, 255, 0.9);
@@ -17,8 +17,8 @@
   --card-bg-dark-transaction: rgba(44, 54, 57, 0.7);
   --card-bg-worklog-light: rgba(255, 255, 255, 0.7);
   --card-bg-worklog-dark: rgba(44, 54, 57, 0.7);
-  --header-bg-light: rgba(255, 255, 255, 0.8);
-  --header-bg-dark: rgba(44, 54, 57, 0.8);
+  --header-bg-light: rgba(255, 255, 255, 0.6);
+  --header-bg-dark: rgba(28, 37, 38, 0.6);
   --border-light: rgba(0, 0, 0, 0.1);
   --border-dark: rgba(255, 255, 255, 0.2);
   --border-btn-light: rgba(0, 0, 0, 0.1);
@@ -1090,4 +1090,40 @@ body.dark-theme .export-section .form-group input[type="month"]:focus {
   .form-group textarea {
     font-size: var(--font-size-small);
   }
+}
+
+/* Сводка по месяцам */
+.worklog-summary {
+  margin-top: var(--margin-bottom-base);
+  padding: var(--padding-small);
+  background: var(--card-bg-light);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-base);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-light);
+}
+
+body.dark-theme .worklog-summary {
+  background: var(--card-bg-dark);
+  border-color: var(--border-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.worklog-summary p {
+  font-size: var(--font-size-base);
+  margin: var(--gap-small) 0;
+  color: var(--primary-text);
+}
+
+body.dark-theme .worklog-summary p {
+  color: var(--primary-text-dark);
+}
+
+.worklog-summary strong {
+  font-weight: 500;
+}
+
+.worklog-summary span {
+  font-weight: 600;
+  color: var(--accent-color);
 }

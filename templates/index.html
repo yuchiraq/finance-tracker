@@ -53,7 +53,7 @@
                     <input type="hidden" id="edit-id" name="edit-id" value="">
                     <div class="form-group">
                         <label for="amount">Сумма</label>
-                        <input type="number" id="amount" name="amount" placeholder="Введите сумму (например, 123.45)" required pattern="^\d*\.?\d*$" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46)">
+                        <input inputmode="decimal" id="amount" name="amount" placeholder="Введите сумму (например, 123.45)" required pattern="^\d*\.?\d*$" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46)">
                     </div>
 
                     <div class="form-group">
@@ -102,7 +102,7 @@
                     </div>
                     <div class="form-group">
                         <label for="start_time">С какого времени</label>
-                        <input type="time" id="start_time" name="start_time" value="09:00">
+                        <input type="time" id="start_time" name="start_time" value="08:00">
                     </div>
                     <div class="form-group">
                         <label for="end_time">До какого времени</label>

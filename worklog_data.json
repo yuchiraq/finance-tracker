@@ -3,42 +3,42 @@
     {
       "Date": "2025-03-03",
       "Place": "Сервер 1С",
-      "StartTime": "9:00",
+      "StartTime": "8:00",
       "EndTime": "17:00",
       "IsDayOff": false
     },
     {
       "Date": "2025-03-04",
       "Place": "Сервер 1С",
-      "StartTime": "9:00",
+      "StartTime": "8:00",
       "EndTime": "17:00",
       "IsDayOff": false
     },
     {
       "Date": "2025-03-06",
       "Place": "Речная, аэропорт",
-      "StartTime": "9:00",
+      "StartTime": "08:00",
       "EndTime": "18:00",
       "IsDayOff": false
     },
     {
       "Date": "2025-03-07",
       "Place": "Бухгалтерия, экскаватор",
-      "StartTime": "9:00",
+      "StartTime": "8:00",
       "EndTime": "17:00",
       "IsDayOff": false
     },
     {
       "Date": "2025-03-10",
       "Place": "Ст. село",
-      "StartTime": "9:00",
+      "StartTime": "08:00",
       "EndTime": "17:00",
       "IsDayOff": false
     },
     {
       "Date": "2025-03-13",
       "Place": "Ст. село",
-      "StartTime": "9:00",
+      "StartTime": "8:00",
       "EndTime": "17:00",
       "IsDayOff": false
     },
@@ -52,14 +52,14 @@
     {
       "Date": "2025-03-19",
       "Place": "Санта",
-      "StartTime": "9:00",
+      "StartTime": "8:00",
       "EndTime": "17:00",
       "IsDayOff": false
     },
     {
       "Date": "2025-03-20",
       "Place": "Санта",
-      "StartTime": "9:00",
+      "StartTime": "8:00",
       "EndTime": "17:00",
       "IsDayOff": false
     },
@@ -73,36 +73,71 @@
     {
       "Date": "2025-03-28",
       "Place": "Санта",
-      "StartTime": "9:00",
+      "StartTime": "8:00",
       "EndTime": "21:00",
       "IsDayOff": false
     },
     {
       "Date": "2025-03-30",
       "Place": "Санта",
-      "StartTime": "9:30",
+      "StartTime": "8:00",
       "EndTime": "17:00",
       "IsDayOff": true
     },
     {
       "Date": "2025-04-01",
       "Place": "Санта",
-      "StartTime": "9:30",
+      "StartTime": "08:00",
       "EndTime": "17:00",
       "IsDayOff": false
     },
     {
       "Date": "2025-04-02",
       "Place": "Лейтенанта Рябцева",
-      "StartTime": "08:40",
+      "StartTime": "08:00",
       "EndTime": "18:30",
       "IsDayOff": false
     },
     {
       "Date": "2025-04-03",
       "Place": "Санта",
-      "StartTime": "09:00",
+      "StartTime": "08:00",
       "EndTime": "17:30",
+      "IsDayOff": false
+    },
+    {
+      "Date": "2025-04-04",
+      "Place": "Лейтенанта Рябцева",
+      "StartTime": "08:00",
+      "EndTime": "16:20",
+      "IsDayOff": false
+    },
+    {
+      "Date": "2025-04-05",
+      "Place": "",
+      "StartTime": "08:00",
+      "EndTime": "17:00",
+      "IsDayOff": true
+    },
+    {
+      "Date": "2025-04-06",
+      "Place": "",
+      "StartTime": "08:00",
+      "EndTime": "17:00",
+      "IsDayOff": true
+    },
+    {
+      "Date": "2025-04-07",
+      "Place": "Санта",
+      "StartTime": "08:00",
+      "EndTime": "17:00",
+      "IsDayOff": false
+    },
+    {
+      "Date": "2025-04-08",
+      "Place": "Санта",
+      "StartTime": "08:00",
+      "EndTime": "17:00",
       "IsDayOff": false
     }
   ]

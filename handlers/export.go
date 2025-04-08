@@ -52,10 +52,14 @@ func (h *ExportHandler) ExportWorkLogPDF(c *gin.Context) {
 			if duration < 0 {
 				duration += 24
 			}
-			allWorkedHours += duration
+			if duration > 7 {
+				//Время обеда
+				duration = duration - 1
+			}
 			if duration > 8 {
 				overHours += duration - 8
 			}
+			allWorkedHours += duration
 		}
 	}
 
@@ -113,6 +117,10 @@ func (h *ExportHandler) ExportWorkLogPDF(c *gin.Context) {
 		if duration < 0 {
 			duration += 24
 		}
+		if duration > 7 {
+			//Время обеда
+			duration = duration - 1
+		}
 		hoursWorked := fmt.Sprintf("%.1f ч", duration)
 
 		pdf.CellFormat(20, 8, formattedDate, "1", 0, "C", false, 0, "")
@@ -131,6 +139,8 @@ func (h *ExportHandler) ExportWorkLogPDF(c *gin.Context) {
 	pdf.Cell(0, 10, fmt.Sprintf("Отработано часов выше нормы (более 8 часов в сутки): %.1f", overHours))
 	pdf.Ln(5)
 	pdf.Cell(0, 10, fmt.Sprintf("Всего часов (включая сверхурочные): %.1f", allWorkedHours+overHours))
+	pdf.Ln(5)
+	pdf.Cell(0, 10, "Если в сутки > 7 часов, отнимается 1 час обеда")
 
 	fileName := fmt.Sprintf("worklog_%s.pdf", selectedMonth.Format("2006-01"))
 	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName))

@@ -1,7 +1,7 @@
-// handlers/stats.go
 package handlers
 
 import (
+	"encoding/json"
 	"finance-tracker/models"
 	"finance-tracker/storage"
 	"fmt"
@@ -38,7 +38,14 @@ func (h *StatsHandler) Stats(c *gin.Context) {
 
 	var startDate, endDate time.Time
 	var periodDisplay string
-	selectedDate := dateStr
+	//selectedDate := dateStr
+
+	// Корректируем SelectedDate для поля ввода
+	selectedDateForInput := dateStr
+	if period == "month" {
+		// Для месячного периода добавляем день (первый день месяца)
+		selectedDateForInput = dateStr + "-01"
+	}
 
 	switch period {
 	case "day":
@@ -241,6 +248,7 @@ func (h *StatsHandler) Stats(c *gin.Context) {
 		var index int
 		var found bool
 		if period == "month" || period == "week" || period == "day" {
+			// Приводим дату транзакции к формату YYYY-MM-DD
 			dateStr = t.DateTime.Format("2006-01-02")
 			for i, label := range chartData.Labels {
 				if label == dateStr {
@@ -272,10 +280,18 @@ func (h *StatsHandler) Stats(c *gin.Context) {
 	}
 	log.Printf("Insights: %v", insights)
 
-	// Передаём числовые значения как float64
+	// Сериализуем ChartData в JSON
+	chartDataJSON, err := json.Marshal(chartData)
+	if err != nil {
+		log.Printf("Error marshaling ChartData: %v", err)
+		c.Redirect(http.StatusFound, "/stats?message=Ошибка при формировании данных графика")
+		return
+	}
+
+	// Передаём числовые значения как float64 и ChartData как JSON-строку
 	c.HTML(http.StatusOK, "stats.html", gin.H{
 		"SelectedPeriod":  period,
-		"SelectedDate":    selectedDate,
+		"SelectedDate":    selectedDateForInput,
 		"Period":          periodDisplay,
 		"TotalIncome":     totalIncome,
 		"TotalExpense":    totalExpense,
@@ -283,7 +299,7 @@ func (h *StatsHandler) Stats(c *gin.Context) {
 		"AvgDailyExpense": avgDailyExpense,
 		"TopIncomes":      topIncomes,
 		"TopExpenses":     topExpenses,
-		"ChartData":       chartData,
+		"ChartDataJSON":   string(chartDataJSON),
 		"Insights":        insights,
 	})
 }

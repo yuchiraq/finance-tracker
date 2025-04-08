@@ -1,4 +1,3 @@
-<!-- templates/stats.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -52,7 +51,7 @@
         <section class="chart-section">
             <div class="card">
                 <h2>График доходов и расходов</h2>
-                <canvas id="financeChart"></canvas>
+                <canvas id="financeChart" data-chart-data='{{ .ChartDataJSON }}'></canvas>
             </div>
         </section>
 
@@ -126,7 +125,9 @@
             const dateInput = document.getElementById('date');
             if (period === 'month') {
                 dateInput.type = 'month';
-                dateInput.value = '{{ .SelectedDate }}';
+                // Преобразуем yyyy-MM-dd в yyyy-MM
+                const dateValue = '{{ .SelectedDate }}';
+                dateInput.value = dateValue.substring(0, 7); // Например, "2025-04"
             } else {
                 dateInput.type = 'date';
                 dateInput.value = '{{ .SelectedDate }}';
@@ -137,14 +138,40 @@
         // График
         let chartData;
         try {
-            chartData = JSON.parse('{{ .ChartData | toJson }}');
+            const canvas = document.getElementById('financeChart');
+            const rawChartData = canvas.getAttribute('data-chart-data');
+            chartData = JSON.parse(rawChartData);
             console.log('Chart Data:', chartData);
         } catch (e) {
             console.error('Error parsing ChartData:', e);
             chartData = { labels: [], incomes: [], expenses: [] };
         }
 
+        // Проверяем, есть ли данные
+        if (!chartData.labels || chartData.labels.length === 0) {
+            console.warn('No data available for the chart');
+            chartData = { labels: ['No Data'], incomes: [0], expenses: [0] };
+        }
+
+        // Проверяем, что метки — валидные даты
+        chartData.labels = chartData.labels.map(label => {
+            const date = new Date(label);
+            if (isNaN(date.getTime())) {
+                console.warn(`Invalid date format: ${label}`);
+                return 'Invalid Date';
+            }
+            return label;
+        });
+
         const ctx = document.getElementById('financeChart').getContext('2d');
+        const gradientIncome = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientIncome.addColorStop(0, 'rgba(52, 199, 89, 0.8)');
+        gradientIncome.addColorStop(1, 'rgba(52, 199, 89, 0.2)');
+
+        const gradientExpense = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientExpense.addColorStop(0, 'rgba(255, 59, 48, 0.8)');
+        gradientExpense.addColorStop(1, 'rgba(255, 59, 48, 0.2)');
+
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -154,15 +181,17 @@
                         label: 'Доходы',
                         data: chartData.incomes || [],
                         borderColor: 'var(--income-color)',
-                        backgroundColor: 'rgba(52, 199, 89, 0.2)',
+                        backgroundColor: gradientIncome,
                         fill: true,
+                        tension: 0.4,
                     },
                     {
                         label: 'Расходы',
                         data: chartData.expenses || [],
                         borderColor: 'var(--expense-color)',
-                        backgroundColor: 'rgba(255, 59, 48, 0.2)',
+                        backgroundColor: gradientExpense,
                         fill: true,
+                        tension: 0.4,
                     }
                 ]
             },
@@ -176,7 +205,13 @@
                         },
                         ticks: {
                             maxTicksLimit: 10,
-                            autoSkip: true
+                            autoSkip: true,
+                            callback: function(value, index, values) {
+                                const label = chartData.labels[index];
+                                if (label === 'Invalid Date') return '';
+                                const date = new Date(label);
+                                return date.getDate(); // Отображаем только день
+                            }
                         }
                     },
                     y: {
@@ -184,7 +219,8 @@
                             display: true,
                             text: 'Сумма (BYN)'
                         },
-                        beginAtZero: true
+                        beginAtZero: true,
+                        suggestedMax: 500
                     }
                 },
                 plugins: {
@@ -195,69 +231,6 @@
                 }
             }
         });
-
-        // В stats.html, внутри <script>
-//const ctx = document.getElementById('financeChart').getContext('2d');
-const gradientIncome = ctx.createLinearGradient(0, 0, 0, 400);
-gradientIncome.addColorStop(0, 'rgba(52, 199, 89, 0.8)');
-gradientIncome.addColorStop(1, 'rgba(52, 199, 89, 0.2)');
-
-const gradientExpense = ctx.createLinearGradient(0, 0, 0, 400);
-gradientExpense.addColorStop(0, 'rgba(255, 59, 48, 0.8)');
-gradientExpense.addColorStop(1, 'rgba(255, 59, 48, 0.2)');
-
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: chartData.labels || [],
-    datasets: [
-      {
-        label: 'Доходы',
-        data: chartData.incomes || [],
-        borderColor: 'var(--income-color)',
-        backgroundColor: gradientIncome,
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: 'Расходы',
-        data: chartData.expenses || [],
-        borderColor: 'var(--expense-color)',
-        backgroundColor: gradientExpense,
-        fill: true,
-        tension: 0.4,
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: 'Дата'
-        },
-        ticks: {
-          maxTicksLimit: 10,
-          autoSkip: true
-        }
-      },
-      y: {
-        title: {
-          display: true,
-          text: 'Сумма (BYN)'
-        },
-        beginAtZero: true
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top'
-      }
-    }
-  }
-});
     </script>
 </body>
 </html>

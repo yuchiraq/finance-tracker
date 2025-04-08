@@ -1,4 +1,3 @@
-// handlers/worklog.go
 package handlers
 
 import (
@@ -18,6 +17,14 @@ type WorkLogHandler struct {
 
 func NewWorkLogHandler(workLogStore *storage.WorkLogStorage) *WorkLogHandler {
 	return &WorkLogHandler{workLogStore: workLogStore}
+}
+
+// WorkLogSummary представляет данные о работе за месяц
+type WorkLogSummary struct {
+	WorkDays          int     `json:"work_days"`
+	TotalHours        float64 `json:"total_hours"`
+	OvertimeHours     float64 `json:"overtime_hours"`
+	TotalWithOvertime float64 `json:"total_with_overtime"`
 }
 
 func (h *WorkLogHandler) WorkLog(c *gin.Context) {
@@ -57,7 +64,12 @@ func (h *WorkLogHandler) WorkLog(c *gin.Context) {
 			if duration < 0 {
 				duration += 24
 			}
-			hoursWorked = fmt.Sprintf("%.1f часов", duration)
+			if duration > 7 {
+				// Время обеда
+				hoursWorked = fmt.Sprintf("%.1f часов - 1", duration)
+			} else {
+				hoursWorked = fmt.Sprintf("%.1f часов", duration)
+			}
 		}
 
 		formattedEntries = append(formattedEntries, gin.H{
@@ -78,6 +90,54 @@ func (h *WorkLogHandler) WorkLog(c *gin.Context) {
 	c.HTML(http.StatusOK, "worklog.html", gin.H{
 		"entries": formattedEntries,
 	})
+}
+
+func (h *WorkLogHandler) GetWorkLogSummary(c *gin.Context) {
+	month := c.Query("month") // Формат: "YYYY-MM"
+	if month == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Месяц не указан"})
+		return
+	}
+
+	monthTime, err := time.Parse("2006-01", month)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный формат месяца"})
+		return
+	}
+
+	data := h.workLogStore.GetData()
+	var totalHours, overtimeHours float64
+	var workDays int
+
+	for _, entry := range data.Entries {
+		entryDate, _ := time.Parse("2006-01-02", entry.Date)
+		if entryDate.Year() == monthTime.Year() && entryDate.Month() == monthTime.Month() && !entry.IsDayOff {
+			workDays++
+			start, _ := time.Parse("15:04", entry.StartTime)
+			end, _ := time.Parse("15:04", entry.EndTime)
+			duration := end.Sub(start).Hours()
+			if duration < 0 {
+				duration += 24
+			}
+			// Учитываем обед, если работа больше 7 часов
+			if duration > 7 {
+				duration -= 1 // Вычитаем час на обед
+			}
+			if duration > 8 {
+				overtimeHours += duration - 8
+			}
+			totalHours += duration
+		}
+	}
+
+	summary := WorkLogSummary{
+		WorkDays:          workDays,
+		TotalHours:        totalHours,
+		OvertimeHours:     overtimeHours,
+		TotalWithOvertime: totalHours + overtimeHours,
+	}
+
+	c.JSON(http.StatusOK, summary)
 }
 
 func (h *WorkLogHandler) AddWork(c *gin.Context) {
@@ -117,7 +177,7 @@ func (h *WorkLogHandler) AddWork(c *gin.Context) {
 		}
 	} else {
 		place = ""
-		startTime = "09:00"
+		startTime = "08:00"
 		endTime = "17:00"
 	}
 
@@ -169,7 +229,7 @@ func (h *WorkLogHandler) EditWork(c *gin.Context) {
 				}
 			} else {
 				place = ""
-				startTime = "09:00"
+				startTime = "08:00"
 				endTime = "17:00"
 			}
 

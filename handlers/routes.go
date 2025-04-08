@@ -25,6 +25,8 @@ func RegisterRoutes(r *gin.Engine, financeStore *storage.FinanceStorage, workLog
 	r.POST("/add-work", workLogHandler.AddWork)
 	r.POST("/edit-work/:date", workLogHandler.EditWork) // Новый маршрут для редактирования
 	r.GET("/worklog/export", exportHandler.ExportWorkLogPDF)
+	// Новый маршрут для получения сводки по месяцам
+	r.GET("/worklog/summary", workLogHandler.GetWorkLogSummary)
 
 	// Маршруты для статистики
 	r.GET("/stats", statsHandler.Stats)

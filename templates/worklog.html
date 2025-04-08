@@ -1,4 +1,3 @@
-<!-- templates/worklog.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -25,6 +24,12 @@
                     <div class="form-group">
                         <label for="month">Выберите месяц</label>
                         <input type="month" id="month" name="month" required>
+                    </div>
+                    <div class="worklog-summary" id="worklog-summary" style="display: none;">
+                        <p><strong>Рабочих дней:</strong> <span id="work-days">0</span> дн</p>
+                        <p><strong>Часы за месяц:</strong> <span id="total-hours">0</span> ч</p>
+                        <p><strong>Часы переработки:</strong> <span id="overtime-hours">0</span> ч</p>
+                        <p><strong>Общее время с переработкой:</strong> <span id="total-with-overtime">0</span> ч</p>
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn apply-btn">Экспорт в PDF</button>
@@ -109,6 +114,41 @@
                 notification.style.display = 'none';
             }, 3000);
         }
+
+        // Динамическое обновление сводки по месяцам
+        const monthInput = document.getElementById('month');
+        const worklogSummary = document.getElementById('worklog-summary');
+        const workDaysSpan = document.getElementById('work-days');
+        const totalHoursSpan = document.getElementById('total-hours');
+        const overtimeHoursSpan = document.getElementById('overtime-hours');
+        const totalWithOvertimeSpan = document.getElementById('total-with-overtime');
+
+        monthInput.addEventListener('change', async () => {
+            const month = monthInput.value;
+            if (!month) {
+                worklogSummary.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/worklog/summary?month=${month}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    workDaysSpan.textContent = data.work_days.toFixed(0);
+                    totalHoursSpan.textContent = data.total_hours.toFixed(1);
+                    overtimeHoursSpan.textContent = data.overtime_hours.toFixed(1);
+                    totalWithOvertimeSpan.textContent = data.total_with_overtime.toFixed(1);
+                    worklogSummary.style.display = 'block';
+                } else {
+                    console.error('Ошибка:', data.error);
+                    worklogSummary.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Ошибка при запросе данных:', error);
+                worklogSummary.style.display = 'none';
+            }
+        });
 
         // Редактирование записи о работе
         document.querySelectorAll('.edit-work-btn').forEach(button => {
